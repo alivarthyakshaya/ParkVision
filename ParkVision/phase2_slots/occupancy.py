@@ -6,23 +6,55 @@ from ultralytics import YOLO
 
 
 # ============================================================
-# PARKVISION - PARKING OCCUPANCY DETECTION
+# PATHS
 # ============================================================
 
-# ---------- FILE PATHS ----------
-IMAGE_PATH = "dataset/images/parking.jpg"
-SLOTS_PATH = "phase2_slots/slots.json"
-OUTPUT_PATH = "phase2_slots/occupancy_result.jpg"
-MODEL_PATH = "yolov8n.pt"
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
+IMAGE_PATH = os.path.join(
+    BASE_DIR,
+    "dataset",
+    "images",
+    "parking.jpg"
+)
+
+SLOTS_PATH = os.path.join(
+    BASE_DIR,
+    "phase2_slots",
+    "slots.json"
+)
+
+OUTPUT_PATH = os.path.join(
+    BASE_DIR,
+    "phase2_slots",
+    "occupancy_result.jpg"
+)
 
 
-# ---------- SETTINGS ----------
-CONFIDENCE_THRESHOLD = 0.10
+# ============================================================
+# SETTINGS
+# ============================================================
 
-# Percentage of the parking-slot area that must overlap
-# with a detected vehicle to consider the slot occupied.
-OCCUPANCY_THRESHOLD = 0.10
+# YOLO confidence
+YOLO_CONFIDENCE = 0.05
 
+# Enlarge every parking-slot crop
+SCALE = 4
+
+# Vehicle classes
+# 2 = car
+# 3 = motorcycle
+# 5 = bus
+# 7 = truck
+VEHICLE_CLASSES = [2, 3, 5, 7]
+
+# If YOLO finds a vehicle with this confidence,
+# consider the slot occupied.
+YOLO_SLOT_CONFIDENCE = 0.05
 
 # ============================================================
 # CHECK FILES
@@ -30,12 +62,12 @@ OCCUPANCY_THRESHOLD = 0.10
 
 if not os.path.exists(IMAGE_PATH):
     print("ERROR: Image not found!")
-    print("Expected:", os.path.abspath(IMAGE_PATH))
+    print("Expected:", IMAGE_PATH)
     exit()
 
 if not os.path.exists(SLOTS_PATH):
     print("ERROR: slots.json not found!")
-    print("Expected:", os.path.abspath(SLOTS_PATH))
+    print("Expected:", SLOTS_PATH)
     exit()
 
 
@@ -46,314 +78,411 @@ if not os.path.exists(SLOTS_PATH):
 image = cv2.imread(IMAGE_PATH)
 
 if image is None:
-    print("ERROR: Could not read image!")
+    print("ERROR: Could not read parking image!")
     exit()
 
 
-original = image.copy()
-
 height, width = image.shape[:2]
-
-
-# ============================================================
-# LOAD PARKING SLOTS
-# ============================================================
-
-with open(SLOTS_PATH, "r") as file:
-    slots = json.load(file)
-
 
 print("--------------------------------")
 print("Parking Occupancy Detection")
 print("--------------------------------")
-print("Total slots :", len(slots))
-
-
-# ============================================================
-# LOAD YOLO MODEL
-# ============================================================
-
-model = YOLO(MODEL_PATH)
-
-
-# ============================================================
-# VEHICLE DETECTION
-# ============================================================
-
-results = model(
-    image,
-    conf=CONFIDENCE_THRESHOLD,
-    imgsz=1280,
-    verbose=False
+print("Image:", IMAGE_PATH)
+print(
+    "Image size:",
+    width,
+    "x",
+    height
 )
 
 
-# COCO vehicle classes
-# 2 = car
-# 3 = motorcycle
-# 5 = bus
-# 7 = truck
+# ============================================================
+# LOAD SLOTS
+# ============================================================
 
-vehicle_classes = [2, 3, 5, 7]
+with open(SLOTS_PATH, "r") as f:
+    slots = json.load(f)
 
-vehicle_boxes = []
-
-
-for result in results:
-
-    if result.boxes is None:
-        continue
-
-    for box in result.boxes:
-
-        class_id = int(box.cls[0])
-        confidence = float(box.conf[0])
-
-        if class_id not in vehicle_classes:
-            continue
-
-        x1, y1, x2, y2 = map(
-            int,
-            box.xyxy[0].tolist()
-        )
-
-        vehicle_boxes.append(
-            (x1, y1, x2, y2, class_id, confidence)
-        )
-
-
-print("Vehicles detected:", len(vehicle_boxes))
+print("Total slots:", len(slots))
 
 
 # ============================================================
-# DRAW VEHICLE DETECTIONS
+# LOAD YOLO
 # ============================================================
 
-for x1, y1, x2, y2, class_id, confidence in vehicle_boxes:
+print("Loading YOLOv8s...")
 
-    cv2.rectangle(
-        image,
-        (x1, y1),
-        (x2, y2),
-        (255, 0, 0),
-        2
-    )
-
-    if class_id == 2:
-        label = "Car"
-
-    elif class_id == 3:
-        label = "Motorcycle"
-
-    elif class_id == 5:
-        label = "Bus"
-
-    elif class_id == 7:
-        label = "Truck"
-
-    else:
-        label = "Vehicle"
-
-    label = f"{label} {confidence:.2f}"
-
-    cv2.putText(
-        image,
-        label,
-        (x1, max(y1 - 5, 15)),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.5,
-        (255, 0, 0),
-        2
-    )
+model = YOLO("yolov8s.pt")
 
 
 # ============================================================
-# CHECK PARKING SLOT OCCUPANCY
+# OUTPUT IMAGE
+# ============================================================
+
+output = image.copy()
+
+
+# ============================================================
+# PROCESS EACH PARKING SLOT
 # ============================================================
 
 occupied_count = 0
-vacant_count = 0
 
 
-for index, slot in enumerate(slots):
+for slot_number, slot in enumerate(slots, start=1):
 
-    # Convert slot points to NumPy array
+    print("--------------------------------")
+    print("Checking Slot", slot_number)
+    print("--------------------------------")
+
+
+    # --------------------------------------------------------
+    # Convert slot coordinates
+    # --------------------------------------------------------
+
     polygon = np.array(
         slot,
         dtype=np.int32
     )
 
+
     # --------------------------------------------------------
-    # Create mask for parking slot
+    # Find bounding rectangle of slot
     # --------------------------------------------------------
 
-    slot_mask = np.zeros(
-        (height, width),
-        dtype=np.uint8
+    x, y, w, h = cv2.boundingRect(
+        polygon
     )
 
-    cv2.fillPoly(
-        slot_mask,
-        [polygon],
-        255
+
+    # Keep coordinates inside image
+    x1 = max(0, x)
+    y1 = max(0, y)
+
+    x2 = min(
+        width,
+        x + w
     )
 
-    slot_area = cv2.countNonZero(slot_mask)
+    y2 = min(
+        height,
+        y + h
+    )
 
-    if slot_area == 0:
-        vacant_count += 1
+
+    # --------------------------------------------------------
+    # Crop slot
+    # --------------------------------------------------------
+
+    crop = image[
+        y1:y2,
+        x1:x2
+    ]
+
+
+    if crop.size == 0:
+
+        print("Invalid slot crop")
         continue
 
 
     # --------------------------------------------------------
-    # Check each detected vehicle
+    # Create mask for polygon
     # --------------------------------------------------------
 
-    occupied = False
+    local_polygon = polygon.copy()
 
-    for x1, y1, x2, y2, class_id, confidence in vehicle_boxes:
-
-        # Make sure coordinates are inside image
-        x1 = max(0, min(x1, width - 1))
-        y1 = max(0, min(y1, height - 1))
-        x2 = max(0, min(x2, width - 1))
-        y2 = max(0, min(y2, height - 1))
-
-        if x2 <= x1 or y2 <= y1:
-            continue
+    local_polygon[:, 0] -= x1
+    local_polygon[:, 1] -= y1
 
 
-        # ----------------------------------------------------
-        # Vehicle mask
-        # ----------------------------------------------------
-
-        vehicle_mask = np.zeros(
-            (height, width),
-            dtype=np.uint8
-        )
-
-        cv2.rectangle(
-            vehicle_mask,
-            (x1, y1),
-            (x2, y2),
-            255,
-            -1
-        )
+    mask = np.zeros(
+        crop.shape[:2],
+        dtype=np.uint8
+    )
 
 
-        # ----------------------------------------------------
-        # Find intersection between vehicle and slot
-        # ----------------------------------------------------
-
-        intersection = cv2.bitwise_and(
-            slot_mask,
-            vehicle_mask
-        )
-
-        intersection_area = cv2.countNonZero(
-            intersection
-        )
+    cv2.fillPoly(
+        mask,
+        [local_polygon],
+        255
+    )
 
 
-        # Percentage of slot covered by vehicle
-        overlap_ratio = (
-            intersection_area / slot_area
-        )
+    # --------------------------------------------------------
+    # Keep only slot region
+    # --------------------------------------------------------
+
+    slot_crop = cv2.bitwise_and(
+        crop,
+        crop,
+        mask=mask
+    )
 
 
-        if overlap_ratio >= OCCUPANCY_THRESHOLD:
+    # --------------------------------------------------------
+    # Enlarge slot
+    # --------------------------------------------------------
 
-            occupied = True
-            break
+    enlarged = cv2.resize(
+        slot_crop,
+        None,
+        fx=SCALE,
+        fy=SCALE,
+        interpolation=cv2.INTER_CUBIC
+    )
 
 
     # ========================================================
-    # DRAW SLOT
+    # YOLO DETECTION ON INDIVIDUAL SLOT
+    # ========================================================
+
+    results = model.predict(
+
+        source=enlarged,
+
+        imgsz=640,
+
+        conf=YOLO_CONFIDENCE,
+
+        classes=VEHICLE_CLASSES,
+
+        verbose=False
+
+    )
+
+
+    result = results[0]
+
+
+    best_confidence = 0
+
+    detected_vehicle = False
+
+
+    if result.boxes is not None:
+
+        for box in result.boxes:
+
+            confidence = float(
+                box.conf[0]
+            )
+
+
+            if confidence > best_confidence:
+
+                best_confidence = confidence
+
+
+            if confidence >= YOLO_SLOT_CONFIDENCE:
+
+                detected_vehicle = True
+
+
+    # ========================================================
+    # OCCUPANCY DECISION
+    # ========================================================
+
+    if detected_vehicle:
+
+        occupied = True
+
+    else:
+
+        occupied = False
+
+
+    # ========================================================
+    # RESULT
     # ========================================================
 
     if occupied:
 
         occupied_count += 1
 
-        # RED = occupied
-        color = (0, 0, 255)
+        color = (
+            0,
+            0,
+            255
+        )
 
         status = "OCCUPIED"
 
+        print(
+            "Vehicle detected!"
+        )
+
+        print(
+            "Confidence:",
+            round(
+                best_confidence,
+                3
+            )
+        )
+
     else:
 
-        vacant_count += 1
-
-        # GREEN = vacant
-        color = (0, 255, 0)
+        color = (
+            0,
+            255,
+            0
+        )
 
         status = "VACANT"
 
+        print(
+            "No vehicle detected."
+        )
 
-    # Draw parking slot polygon
+        print(
+            "Best confidence:",
+            round(
+                best_confidence,
+                3
+            )
+        )
+
+
+    # ========================================================
+    # DRAW SLOT
+    # ========================================================
+
     cv2.polylines(
-        image,
+
+        output,
+
         [polygon],
+
         True,
+
         color,
-        3
+
+        4
+
     )
 
 
     # --------------------------------------------------------
-    # Slot number position
+    # Slot label position
     # --------------------------------------------------------
 
-    x, y, w, h = cv2.boundingRect(polygon)
+    label_x = x
 
-    text_x = x
-    text_y = max(y - 8, 20)
+    label_y = max(
+        25,
+        y - 8
+    )
 
 
-    # Slot label
     cv2.putText(
-        image,
-        f"Slot {index + 1}: {status}",
-        (text_x, text_y),
+
+        output,
+
+        f"Slot {slot_number}: {status}",
+
+        (
+            label_x,
+            label_y
+        ),
+
         cv2.FONT_HERSHEY_SIMPLEX,
+
         0.55,
+
         color,
-        2
+
+        2,
+
+        cv2.LINE_AA
+
     )
 
 
 # ============================================================
-# DISPLAY OCCUPANCY INFORMATION
+# FINAL COUNTS
 # ============================================================
 
-cv2.putText(
-    image,
-    f"Occupied: {occupied_count}",
-    (30, 50),
-    cv2.FONT_HERSHEY_SIMPLEX,
-    0.9,
-    (0, 0, 255),
-    3
+total_slots = len(slots)
+
+vacant_count = (
+    total_slots -
+    occupied_count
 )
 
-cv2.putText(
-    image,
-    f"Vacant: {vacant_count}",
-    (30, 90),
-    cv2.FONT_HERSHEY_SIMPLEX,
-    0.9,
-    (0, 255, 0),
-    3
+
+# ============================================================
+# SUMMARY ON IMAGE
+# ============================================================
+
+cv2.rectangle(
+
+    output,
+
+    (10, 10),
+
+    (300, 140),
+
+    (0, 0, 0),
+
+    -1
+
 )
 
+
 cv2.putText(
-    image,
-    f"Total Slots: {len(slots)}",
-    (30, 130),
+
+    output,
+
+    f"Total Slots: {total_slots}",
+
+    (25, 45),
+
     cv2.FONT_HERSHEY_SIMPLEX,
-    0.8,
+
+    0.75,
+
     (255, 255, 255),
+
     2
+
+)
+
+
+cv2.putText(
+
+    output,
+
+    f"Occupied: {occupied_count}",
+
+    (25, 80),
+
+    cv2.FONT_HERSHEY_SIMPLEX,
+
+    0.75,
+
+    (0, 0, 255),
+
+    2
+
+)
+
+
+cv2.putText(
+
+    output,
+
+    f"Vacant: {vacant_count}",
+
+    (25, 115),
+
+    cv2.FONT_HERSHEY_SIMPLEX,
+
+    0.75,
+
+    (0, 255, 0),
+
+    2
+
 )
 
 
@@ -362,35 +491,62 @@ cv2.putText(
 # ============================================================
 
 cv2.imwrite(
+
     OUTPUT_PATH,
-    image
+
+    output
+
 )
 
 
 # ============================================================
-# FINAL RESULT
+# FINAL TERMINAL OUTPUT
 # ============================================================
 
-print("--------------------------------")
-print("Parking Occupancy Detection")
-print("--------------------------------")
-print("Total slots :", len(slots))
-print("Occupied    :", occupied_count)
-print("Vacant      :", vacant_count)
-print("Output      :", OUTPUT_PATH)
-print("--------------------------------")
+print()
+print("================================")
+print("FINAL RESULT")
+print("================================")
+
+print(
+    "Total slots :",
+    total_slots
+)
+
+print(
+    "Occupied    :",
+    occupied_count
+)
+
+print(
+    "Vacant      :",
+    vacant_count
+)
+
+print(
+    "Output      :",
+    OUTPUT_PATH
+)
+
+print("================================")
 
 
 # ============================================================
-# SHOW RESULT
+# SHOW OUTPUT
 # ============================================================
 
 cv2.imshow(
+
     "ParkVision - Parking Occupancy",
-    image
+
+    output
+
 )
 
-print("Press any key on the image window to close.")
+print(
+    "Press any key on the image window to close."
+)
 
 cv2.waitKey(0)
+
 cv2.destroyAllWindows()

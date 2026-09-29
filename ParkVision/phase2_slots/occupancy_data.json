@@ -1,0 +1,14 @@
+{
+    "total_slots": 7,
+    "occupied": 0,
+    "vacant": 7,
+    "slot_status": [
+        "VACANT",
+        "VACANT",
+        "VACANT",
+        "VACANT",
+        "VACANT",
+        "VACANT",
+        "VACANT"
+    ]
+}
