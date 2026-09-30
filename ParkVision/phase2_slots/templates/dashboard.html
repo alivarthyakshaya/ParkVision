@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ParkVision Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .header {
+            background: #111827;
+            color: white;
+            padding: 22px 40px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+        }
+
+        .header p {
+            margin-top: 5px;
+            color: #cbd5e1;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow:
+                0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .total h2 {
+            color: #2563eb;
+        }
+
+        .occupied h2 {
+            color: #dc2626;
+        }
+
+        .vacant h2 {
+            color: #16a34a;
+        }
+
+        .section {
+            margin-top: 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow:
+                0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            margin-bottom: 20px;
+        }
+
+        .slots {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+        }
+
+        .slot {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .slot.occupied {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 2px solid #ef4444;
+        }
+
+        .slot.vacant {
+            background: #dcfce7;
+            color: #15803d;
+            border: 2px solid #22c55e;
+        }
+
+        .unknown {
+            background: #fef3c7;
+            color: #92400e;
+            border: 2px solid #f59e0b;
+        }
+
+        .percentage {
+            margin-top: 25px;
+        }
+
+        .progress {
+            height: 25px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #dc2626;
+            transition: width 0.5s;
+        }
+
+        .refresh {
+            margin-top: 25px;
+            padding: 12px 22px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .refresh:hover {
+            background: #1d4ed8;
+        }
+
+        @media(max-width: 700px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .slots {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="header">
+
+        <h1>🚗 ParkVision</h1>
+
+        <p>
+            Intelligent Parking Occupancy Detection System
+        </p>
+
+    </div>
+
+
+    <div class="container">
+
+
+        <!-- SUMMARY CARDS -->
+
+        <div class="cards">
+
+            <div class="card total">
+
+                <h2 id="total">
+                    {{ data.total_slots }}
+                </h2>
+
+                <p>Total Slots</p>
+
+            </div>
+
+
+            <div class="card occupied">
+
+                <h2 id="occupied">
+                    {{ data.occupied }}
+                </h2>
+
+                <p>Occupied</p>
+
+            </div>
+
+
+            <div class="card vacant">
+
+                <h2 id="vacant">
+                    {{ data.vacant }}
+                </h2>
+
+                <p>Vacant</p>
+
+            </div>
+
+        </div>
+
+
+        <!-- OCCUPANCY RATE -->
+
+        <div class="section">
+
+            <h2>Parking Occupancy</h2>
+
+            <p id="percentageText">
+                Loading...
+            </p>
+
+            <div class="percentage">
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        id="progressBar">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SLOT STATUS -->
+
+        <div class="section">
+
+            <h2>Parking Slot Status</h2>
+
+            <div
+                class="slots"
+                id="slots">
+            </div>
+
+        </div>
+
+
+        <button
+            class="refresh"
+            onclick="loadData()">
+
+            🔄 Refresh Data
+
+        </button>
+
+
+    </div>
+
+
+<script>
+
+function loadData() {
+
+    fetch("/data")
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            document.getElementById(
+                "total"
+            ).innerText =
+                data.total_slots;
+
+
+            document.getElementById(
+                "occupied"
+            ).innerText =
+                data.occupied;
+
+
+            document.getElementById(
+                "vacant"
+            ).innerText =
+                data.vacant;
+
+
+            // Occupancy percentage
+
+            let percentage =
+                (data.occupied /
+                data.total_slots) * 100;
+
+
+            document.getElementById(
+                "percentageText"
+            ).innerText =
+                "Occupancy Rate: "
+                + percentage.toFixed(1)
+                + "%";
+
+
+            document.getElementById(
+                "progressBar"
+            ).style.width =
+                percentage + "%";
+
+
+            // Slots
+
+            let slots =
+                document.getElementById(
+                    "slots"
+                );
+
+            slots.innerHTML = "";
+
+
+            data.slot_status.forEach(
+                (status, index) => {
+
+                    let slot =
+                        document.createElement(
+                            "div"
+                        );
+
+                    slot.classList.add(
+                        "slot"
+                    );
+
+
+                    if (
+                        status ===
+                        "OCCUPIED"
+                    ) {
+
+                        slot.classList.add(
+                            "occupied"
+                        );
+
+                        slot.innerText =
+                            "🔴 Slot "
+                            + (index + 1)
+                            + " - OCCUPIED";
+
+                    }
+
+                    else if (
+                        status ===
+                        "VACANT"
+                    ) {
+
+                        slot.classList.add(
+                            "vacant"
+                        );
+
+                        slot.innerText =
+                            "🟢 Slot "
+                            + (index + 1)
+                            + " - VACANT";
+
+                    }
+
+                    else {
+
+                        slot.classList.add(
+                            "unknown"
+                        );
+
+                        slot.innerText =
+                            "🟡 Slot "
+                            + (index + 1)
+                            + " - UNKNOWN";
+
+                    }
+
+
+                    slots.appendChild(
+                        slot
+                    );
+
+                });
+
+        })
+
+        .catch(error => {
+
+            console.log(
+                "Error:",
+                error
+            );
+
+        });
+
+}
+
+
+// Load when page opens
+
+loadData();
+
+</script>
+
+
+</body>
+
+</html>

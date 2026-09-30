@@ -1,14 +1,14 @@
 {
     "total_slots": 7,
-    "occupied": 0,
-    "vacant": 7,
+    "occupied": 6,
+    "vacant": 1,
     "slot_status": [
+        "OCCUPIED",
         "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT"
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED"
     ]
 }

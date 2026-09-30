@@ -1,23 +1,38 @@
 import cv2
+import json
 import os
-from ultralytics import YOLO
 
-# ============================================================
-# PARKVISION - PARKING OCCUPANCY DETECTION
-# Image: PKLot 640x640
-# ============================================================
+
+from ultralytics import YOLO
+from huggingface_hub import hf_hub_download
+
+
+# ==========================================
+# FILES
+# ==========================================
 
 IMAGE_PATH = "dataset/images/parking.jpg"
+SLOTS_PATH = "phase2_slots/slots.json"
 OUTPUT_PATH = "phase2_slots/occupancy_result.jpg"
+
+
+# ==========================================
+# SETTINGS
+# ==========================================
+
+CONFIDENCE = 0.25
+IOU_MATCH_THRESHOLD = 0.05
+
+
+# ==========================================
+# LOAD IMAGE
+# ==========================================
 
 print("--------------------------------")
 print("ParkVision Parking Occupancy")
 print("--------------------------------")
-print("Image:", os.path.abspath(IMAGE_PATH))
 
-# ------------------------------------------------------------
-# LOAD IMAGE
-# ------------------------------------------------------------
+print("Image:", IMAGE_PATH)
 
 image = cv2.imread(IMAGE_PATH)
 
@@ -25,193 +40,266 @@ if image is None:
     print("ERROR: parking.jpg not found!")
     exit()
 
-print("Image size:", image.shape[1], "x", image.shape[0])
+height, width = image.shape[:2]
 
-# ------------------------------------------------------------
-# 7 PARKING SLOTS
-#
-# These coordinates are for the CURRENT 640x640 image.
-#
-# Each tuple:
-# (x1, y1, x2, y2)
-# ------------------------------------------------------------
+print("Image size:", width, "x", height)
 
-slots = [
-    (433, 250, 456, 321),   # Slot 1
-    (457, 250, 480, 321),   # Slot 2
-    (481, 250, 504, 321),   # Slot 3
-    (505, 250, 528, 321),   # Slot 4
-    (529, 250, 552, 321),   # Slot 5
-    (553, 250, 576, 321),   # Slot 6
-    (577, 250, 600, 321)    # Slot 7
-]
+
+# ==========================================
+# LOAD OUR 7 SELECTED SLOTS
+# ==========================================
+
+with open(SLOTS_PATH, "r") as f:
+    data = json.load(f)
+
+slots = data["slots"]
 
 print("Total slots:", len(slots))
 
-# ------------------------------------------------------------
-# LOAD YOLO
-# ------------------------------------------------------------
+
+# ==========================================
+# DOWNLOAD / LOAD PKLOT YOLO MODEL
+# ==========================================
 
 print("--------------------------------")
-print("Loading YOLOv8s...")
+print("Loading PKLot YOLOv8s model...")
 print("--------------------------------")
 
-model = YOLO("yolov8s.pt")
+model_path = hf_hub_download(
+    repo_id="dronefreak/pklot-yolov8s",
+    filename="best.pt"
+)
 
-# Vehicle classes in COCO
-# 2 = car
-# 3 = motorcycle
-# 5 = bus
-# 7 = truck
+model = YOLO(model_path)
 
-VEHICLE_CLASSES = [2, 3, 5, 7]
 
-occupied = 0
+# ==========================================
+# IOU FUNCTION
+# ==========================================
 
-# ------------------------------------------------------------
-# CHECK EACH SLOT
-# ------------------------------------------------------------
+def calculate_iou(box1, box2):
 
-for i, (x1, y1, x2, y2) in enumerate(slots):
+    x1 = max(box1[0], box2[0])
+    y1 = max(box1[1], box2[1])
 
-    print("--------------------------------")
-    print("Checking Slot", i + 1)
-    print("--------------------------------")
+    x2 = min(box1[2], box2[2])
+    y2 = min(box1[3], box2[3])
 
-    # Make sure coordinates are inside image
-    x1 = max(0, x1)
-    y1 = max(0, y1)
-    x2 = min(image.shape[1], x2)
-    y2 = min(image.shape[0], y2)
+    if x2 <= x1 or y2 <= y1:
+        return 0.0
 
-    # --------------------------------------------------------
-    # Add padding around slot
-    # --------------------------------------------------------
+    intersection = (x2 - x1) * (y2 - y1)
 
-    pad = 12
+    area1 = (box1[2] - box1[0]) * (box1[3] - box1[1])
+    area2 = (box2[2] - box2[0]) * (box2[3] - box2[1])
 
-    cx1 = max(0, x1 - pad)
-    cy1 = max(0, y1 - pad)
-    cx2 = min(image.shape[1], x2 + pad)
-    cy2 = min(image.shape[0], y2 + pad)
+    union = area1 + area2 - intersection
 
-    crop = image[cy1:cy2, cx1:cx2]
+    if union <= 0:
+        return 0.0
 
-    if crop.size == 0:
-        print("Invalid slot")
-        continue
+    return intersection / union
 
-    # --------------------------------------------------------
-    # ENLARGE SMALL PARKING SLOT
-    # --------------------------------------------------------
 
-    enlarged = cv2.resize(
-        crop,
-        None,
-        fx=5,
-        fy=5,
-        interpolation=cv2.INTER_CUBIC
-    )
+# ==========================================
+# RUN PKLOT MODEL
+# ==========================================
 
-    # --------------------------------------------------------
-    # YOLO DETECTION ON INDIVIDUAL SLOT
-    # --------------------------------------------------------
+print("--------------------------------")
+print("Detecting parking spaces...")
+print("--------------------------------")
 
-    results = model.predict(
-        enlarged,
-        imgsz=640,
-        conf=0.05,
-        iou=0.45,
-        classes=VEHICLE_CLASSES,
-        verbose=False
-    )
+results = model.predict(
+    source=image,
+    imgsz=960,
+    conf=CONFIDENCE,
+    verbose=False
+)
 
-    best_conf = 0.0
-    vehicle_found = False
+result = results[0]
 
-    for result in results:
 
-        if result.boxes is None:
+# ==========================================
+# GET ALL DETECTIONS
+# ==========================================
+
+detections = []
+
+if result.boxes is not None:
+
+    for box in result.boxes:
+
+        coords = box.xyxy[0].tolist()
+
+        x1, y1, x2, y2 = map(int, coords)
+
+        confidence = float(box.conf[0])
+
+        class_id = int(box.cls[0])
+
+        # PKLot:
+        # 0 = vacant
+        # 1 = occupied
+
+        if class_id == 0:
+            status = "VACANT"
+
+        elif class_id == 1:
+            status = "OCCUPIED"
+
+        else:
             continue
 
-        for box in result.boxes:
+        detections.append({
+            "box": [x1, y1, x2, y2],
+            "confidence": confidence,
+            "status": status
+        })
 
-            conf = float(box.conf[0])
 
-            if conf > best_conf:
-                best_conf = conf
+print("Parking spaces detected:", len(detections))
 
-            if conf >= 0.08:
-                vehicle_found = True
 
-    # --------------------------------------------------------
-    # RESULT
-    # --------------------------------------------------------
+# ==========================================
+# DRAW RESULTS
+# ==========================================
 
-    if vehicle_found:
+output = image.copy()
 
-        status = "OCCUPIED"
-        color = (0, 0, 255)
-        occupied += 1
+occupied_count = 0
+vacant_count = 0
+
+
+# ==========================================
+# MATCH OUR 7 SLOTS
+# ==========================================
+
+for number, slot in enumerate(slots, start=1):
+
+    best_detection = None
+    best_iou = 0.0
+
+    # Find the PKLot detection
+    # that best matches this slot
+
+    for detection in detections:
+
+        iou = calculate_iou(
+            slot,
+            detection["box"]
+        )
+
+        if iou > best_iou:
+
+            best_iou = iou
+            best_detection = detection
+
+
+    # ======================================
+    # DECIDE STATUS
+    # ======================================
+
+    if (
+        best_detection is not None
+        and best_iou >= IOU_MATCH_THRESHOLD
+    ):
+
+        status = best_detection["status"]
+        confidence = best_detection["confidence"]
 
     else:
 
-        status = "VACANT"
+        status = "UNKNOWN"
+        confidence = 0.0
+
+
+    # ======================================
+    # COUNT
+    # ======================================
+
+    if status == "OCCUPIED":
+
+        occupied_count += 1
+        color = (0, 0, 255)
+
+    elif status == "VACANT":
+
+        vacant_count += 1
         color = (0, 255, 0)
 
+    else:
+
+        color = (0, 255, 255)
+
+
+    # ======================================
+    # TERMINAL OUTPUT
+    # ======================================
+
+    print("--------------------------------")
+    print("Checking Slot", number)
+    print("--------------------------------")
+
     print(
-        f"Slot {i + 1}: {status} "
-        f"(confidence={best_conf:.3f})"
+        "Slot", number,
+        ":", status,
+        "| IoU =",
+        round(best_iou, 3),
+        "| confidence =",
+        round(confidence, 3)
     )
 
-    # --------------------------------------------------------
+
+    # ======================================
     # DRAW SLOT
-    # --------------------------------------------------------
+    # ======================================
+
+    x1, y1, x2, y2 = slot
 
     cv2.rectangle(
-        image,
+        output,
         (x1, y1),
         (x2, y2),
         color,
         3
     )
 
-    # Label position
-    label_y = max(20, y1 - 8)
-
     cv2.putText(
-        image,
-        f"Slot {i + 1}: {status}",
-        (x1, label_y),
+        output,
+        f"Slot {number}: {status}",
+        (x1, max(y1 - 8, 20)),
         cv2.FONT_HERSHEY_SIMPLEX,
-        0.55,
+        0.45,
         color,
         2
     )
 
-# ------------------------------------------------------------
-# FINAL COUNTS
-# ------------------------------------------------------------
+
+# ==========================================
+# FINAL RESULT
+# ==========================================
 
 total = len(slots)
-vacant = total - occupied
 
 print()
 print("================================")
 print("FINAL RESULT")
 print("================================")
+
 print("Total slots :", total)
-print("Occupied    :", occupied)
-print("Vacant      :", vacant)
+print("Occupied    :", occupied_count)
+print("Vacant      :", vacant_count)
+
 print("================================")
 
-# ------------------------------------------------------------
-# DISPLAY COUNTER
-# ------------------------------------------------------------
+
+# ==========================================
+# SUMMARY ON IMAGE
+# ==========================================
 
 cv2.putText(
-    image,
-    f"Occupied: {occupied}",
+    output,
+    f"Occupied: {occupied_count}",
     (20, 35),
     cv2.FONT_HERSHEY_SIMPLEX,
     0.8,
@@ -220,9 +308,9 @@ cv2.putText(
 )
 
 cv2.putText(
-    image,
-    f"Vacant: {vacant}",
-    (20, 70),
+    output,
+    f"Vacant: {vacant_count}",
+    (20, 65),
     cv2.FONT_HERSHEY_SIMPLEX,
     0.8,
     (0, 255, 0),
@@ -230,31 +318,94 @@ cv2.putText(
 )
 
 cv2.putText(
-    image,
+    output,
     f"Total Slots: {total}",
-    (20, 105),
+    (20, 95),
     cv2.FONT_HERSHEY_SIMPLEX,
     0.8,
     (255, 255, 255),
     2
 )
 
-# ------------------------------------------------------------
+
+# ==========================================
 # SAVE
-# ------------------------------------------------------------
+# ==========================================
 
-cv2.imwrite(OUTPUT_PATH, image)
+os.makedirs("phase2_slots", exist_ok=True)
 
-print("Output:", os.path.abspath(OUTPUT_PATH))
+cv2.imwrite(
+    OUTPUT_PATH,
+    output
+)
+
+# ==========================================
+# SAVE OCCUPANCY DATA
+# ==========================================
+
+occupancy_data = {
+    "total_slots": total,
+    "occupied": occupied_count,
+    "vacant": vacant_count,
+    "slot_status": []
+}
+
+# Re-check each slot to store its status
+for slot in slots:
+
+    best_detection = None
+    best_iou = 0.0
+
+    for detection in detections:
+
+        iou = calculate_iou(
+            slot,
+            detection["box"]
+        )
+
+        if iou > best_iou:
+            best_iou = iou
+            best_detection = detection
+
+    if (
+        best_detection is not None
+        and best_iou >= IOU_MATCH_THRESHOLD
+    ):
+        occupancy_data["slot_status"].append(
+            best_detection["status"]
+        )
+    else:
+        occupancy_data["slot_status"].append(
+            "UNKNOWN"
+        )
+
+
+with open(
+    "phase2_slots/occupancy_data.json",
+    "w"
+) as f:
+
+    json.dump(
+        occupancy_data,
+        f,
+        indent=4
+    )
+
+print("Occupancy data saved.")
+
+
+print("Output:", OUTPUT_PATH)
 print("================================")
 
-# ------------------------------------------------------------
-# SHOW
-# ------------------------------------------------------------
 
-cv2.imshow("ParkVision - Parking Occupancy", image)
+# ==========================================
+# DISPLAY
+# ==========================================
 
-print("Press any key on the image window to close.")
+cv2.imshow(
+    "ParkVision Parking Occupancy",
+    output
+)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
