@@ -7,46 +7,106 @@ import sys
 
 app = Flask(__name__)
 
+ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png"}
+
+# ==========================================
+# FILE PATHS
+# ==========================================
+
 DATA_FILE = "phase2_slots/occupancy_data.json"
+
 UPLOAD_FOLDER = "phase2_slots/uploads"
+
+DATASET_IMAGE = "dataset/images/parking.jpg"
+
 RESULT_IMAGE = "phase2_slots/occupancy_result.jpg"
 
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+STATIC_RESULT_IMAGE = "phase2_slots/static/occupancy_result.jpg"
 
+
+# ==========================================
+# CREATE REQUIRED FOLDERS
+# ==========================================
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs("dataset/images", exist_ok=True)
+os.makedirs("phase2_slots/static", exist_ok=True)
+
+
+# ==========================================
+# HOME PAGE
+# ==========================================
 
 @app.route("/")
 def home():
 
-    if not os.path.exists(DATA_FILE):
-        data = {
-            "total_slots": 0,
-            "occupied": 0,
-            "vacant": 0,
-            "slots": []
-        }
-    else:
-        with open(DATA_FILE, "r") as f:
-            data = json.load(f)
+    data = {
+        "total_slots": 0,
+        "occupied": 0,
+        "vacant": 0,
+        "occupancy_rate": 0,
+        "slot_status": [],
+        "slots": []
+    }
 
-    return render_template("dashboard.html", data=data)
+    if os.path.exists(DATA_FILE):
 
+        try:
+
+            with open(DATA_FILE, "r") as f:
+                data = json.load(f)
+
+        except Exception as e:
+
+            print("Error reading occupancy data:", e)
+
+    return render_template(
+        "dashboard.html",
+        data=data
+    )
+
+
+# ==========================================
+# API
+# ==========================================
 
 @app.route("/data")
 def get_data():
 
     if not os.path.exists(DATA_FILE):
+
         return jsonify({
-            "error": "Occupancy data not found"
+            "total_slots": 0,
+            "occupied": 0,
+            "vacant": 0,
+            "occupancy_rate": 0
         })
 
-    with open(DATA_FILE, "r") as f:
-        data = json.load(f)
+    try:
 
-    return jsonify(data)
+        with open(DATA_FILE, "r") as f:
+            data = json.load(f)
 
+        return jsonify(data)
+
+    except Exception as e:
+
+        return jsonify({
+            "error": str(e)
+        }), 500
+
+
+# ==========================================
+# IMAGE UPLOAD
+# ==========================================
 
 @app.route("/upload", methods=["POST"])
 def upload_image():
+
+    print()
+    print("================================")
+    print("NEW IMAGE UPLOAD")
+    print("================================")
 
     if "image" not in request.files:
         return "No image selected", 400
@@ -56,59 +116,123 @@ def upload_image():
     if file.filename == "":
         return "No image selected", 400
 
-    # Create upload folder
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    # Check file extension
+    extension = os.path.splitext(file.filename)[1].lower()
 
-    # Save uploaded image
+    if extension not in ALLOWED_EXTENSIONS:
+
+        return (
+            "Invalid file type. Please upload JPG, JPEG, or PNG image.",
+            400
+        )
+
     upload_path = os.path.join(
         UPLOAD_FOLDER,
         "parking.jpg"
     )
 
-    file.save(upload_path)
+    try:
 
-    # Copy image to dataset location
-    dataset_image = "dataset/images/parking.jpg"
+        file.save(upload_path)
 
-    os.makedirs("dataset/images", exist_ok=True)
+        print("Uploaded image:", upload_path)
 
-    shutil.copy(
-        upload_path,
-        dataset_image
-    )
+        # Copy uploaded image to dataset folder
+        shutil.copy2(
+            upload_path,
+            DATASET_IMAGE
+        )
 
-    print("--------------------------------")
-    print("New parking image uploaded")
-    print("Running occupancy detection...")
-    print("--------------------------------")
+        print(
+            "Copied image to:",
+            DATASET_IMAGE
+        )
 
-    # Run occupancy detection script
-    result = subprocess.run(
-        [sys.executable, "phase2_slots/occupancy.py"],
-        capture_output=True,
-        text=True
-    )
+        print()
+        print("--------------------------------")
+        print("Running AI parking detection...")
+        print("--------------------------------")
 
-    print(result.stdout)
+        result = subprocess.run(
+            [
+                sys.executable,
+                "phase2_slots/occupancy.py"
+            ],
+            capture_output=True,
+            text=True,
+            cwd=os.getcwd()
+        )
 
-    if result.stderr:
-        print("ERROR:")
-        print(result.stderr)
+        print(result.stdout)
 
-    print("--------------------------------")
-    print("Detection completed")
-    print("--------------------------------")
+        if result.stderr:
 
-    return redirect(url_for("home"))
+            print("AI ERROR:")
+            print(result.stderr)
 
+        if result.returncode != 0:
+
+            print("Detection failed.")
+
+            return (
+                "Image uploaded, but AI detection failed. "
+                "Please upload a valid parking image.",
+                500
+            )
+
+        if os.path.exists(RESULT_IMAGE):
+
+            shutil.copy2(
+                RESULT_IMAGE,
+                STATIC_RESULT_IMAGE
+            )
+
+            print(
+                "Updated dashboard result image."
+            )
+
+        else:
+
+            print(
+                "WARNING: Result image not found."
+            )
+
+        print("--------------------------------")
+        print("AI detection completed")
+        print("--------------------------------")
+
+        return redirect(
+            url_for("home")
+        )
+
+    except Exception as e:
+
+        print(
+            "Upload/detection error:",
+            e
+        )
+
+        return (
+            "Something went wrong while processing the image.",
+            500
+        )
+
+
+# ==========================================
+# RUN SERVER
+# ==========================================
 
 if __name__ == "__main__":
 
     print("--------------------------------")
     print("ParkVision Dashboard")
     print("--------------------------------")
-    print("Starting server...")
-    print("Open: http://127.0.0.1:5050")
+
+    print(
+        "Open: http://127.0.0.1:5050"
+    )
+
+    print("--------------------------------")
 
     app.run(
         host="127.0.0.1",

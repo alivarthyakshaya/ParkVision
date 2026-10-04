@@ -1,0 +1,6 @@
+image,total_slots,occupied,vacant,occupancy_rate,average_confidence
+parking.jpg,78,10,68,12.82,0.718
+parking2.jpg,142,20,122,14.08,0.813
+parking3.jpg,96,94,2,97.92,0.696
+parking4.jpg,116,114,2,98.28,0.724
+parking5.jpg,110,58,52,52.73,0.774

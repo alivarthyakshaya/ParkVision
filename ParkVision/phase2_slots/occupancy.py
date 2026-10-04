@@ -1,6 +1,7 @@
 import cv2
 import json
 import os
+from datetime import datetime
 
 from ultralytics import YOLO
 from huggingface_hub import hf_hub_download
@@ -11,18 +12,26 @@ from huggingface_hub import hf_hub_download
 # ==========================================
 
 IMAGE_PATH = "dataset/images/parking.jpg"
+
 OUTPUT_PATH = "phase2_slots/occupancy_result.jpg"
+
 DATA_PATH = "phase2_slots/occupancy_data.json"
 
-# Dashboard image
-STATIC_OUTPUT_PATH = "phase2_slots/static/occupancy_result.jpg"
+STATIC_OUTPUT_PATH = (
+    "phase2_slots/static/occupancy_result.jpg"
+)
 
 
 # ==========================================
 # SETTINGS
 # ==========================================
 
-CONFIDENCE = 0.25
+# Higher confidence removes weak detections
+CONFIDENCE = 0.40
+
+# Lower IoU means overlapping duplicate boxes
+# are more likely to be removed
+NMS_IOU = 0.40
 
 
 # ==========================================
@@ -45,9 +54,7 @@ image = cv2.imread(IMAGE_PATH)
 if image is None:
 
     print("ERROR: parking.jpg not found!")
-
     exit()
-
 
 height, width = image.shape[:2]
 
@@ -60,13 +67,12 @@ print(
 
 
 # ==========================================
-# LOAD PKLOT YOLO MODEL
+# LOAD PKLOT MODEL
 # ==========================================
 
 print("--------------------------------")
 print("Loading PKLot YOLOv8s model...")
 print("--------------------------------")
-
 
 model_path = hf_hub_download(
     repo_id="dronefreak/pklot-yolov8s",
@@ -77,26 +83,32 @@ model = YOLO(model_path)
 
 
 # ==========================================
-# RUN MODEL
+# DETECTION
 # ==========================================
 
 print("--------------------------------")
 print("Detecting parking spaces...")
 print("--------------------------------")
 
-
 results = model.predict(
+
     source=image,
+
     imgsz=960,
+
     conf=CONFIDENCE,
+
+    iou=NMS_IOU,
+
     verbose=False
+
 )
 
 result = results[0]
 
 
 # ==========================================
-# AUTOMATIC PARKING SLOT DETECTION
+# AUTOMATIC SLOTS
 # ==========================================
 
 slots = []
@@ -122,9 +134,7 @@ if result.boxes is not None:
         )
 
 
-        # ==================================
         # PKLot classes
-        # ==================================
 
         if class_id == 0:
 
@@ -138,10 +148,6 @@ if result.boxes is not None:
 
             continue
 
-
-        # ==================================
-        # CREATE AUTOMATIC SLOT
-        # ==================================
 
         slots.append({
 
@@ -166,18 +172,18 @@ print(
 
 
 # ==========================================
-# CREATE OUTPUT IMAGE
+# CREATE OUTPUT
 # ==========================================
 
 output = image.copy()
 
-
 occupied_count = 0
+
 vacant_count = 0
 
 
 # ==========================================
-# DRAW AUTOMATIC SLOTS
+# DRAW DETECTIONS
 # ==========================================
 
 for number, slot in enumerate(
@@ -218,7 +224,7 @@ for number, slot in enumerate(
 
 
     # ======================================
-    # DRAW SLOT
+    # DRAW BOX
     # ======================================
 
     cv2.rectangle(
@@ -237,14 +243,10 @@ for number, slot in enumerate(
 
 
     # ======================================
-    # SLOT LABEL
+    # SMALL LABEL
     # ======================================
 
-    label = (
-        f"Slot {number}: "
-        f"{status}"
-    )
-
+    label = str(number)
 
     cv2.putText(
 
@@ -253,13 +255,13 @@ for number, slot in enumerate(
         label,
 
         (
-            x1,
-            max(y1 - 5, 15)
+            x1 + 2,
+            y1 + 15
         ),
 
         cv2.FONT_HERSHEY_SIMPLEX,
 
-        0.35,
+        0.45,
 
         color,
 
@@ -273,6 +275,17 @@ for number, slot in enumerate(
 # ==========================================
 
 total = len(slots)
+
+
+if total > 0:
+
+    occupancy_rate = (
+        occupied_count / total
+    ) * 100
+
+else:
+
+    occupancy_rate = 0
 
 
 print()
@@ -295,11 +308,17 @@ print(
     vacant_count
 )
 
+print(
+    "Occupancy   :",
+    round(occupancy_rate, 2),
+    "%"
+)
+
 print("================================")
 
 
 # ==========================================
-# SUMMARY ON IMAGE
+# SUMMARY
 # ==========================================
 
 cv2.putText(
@@ -359,8 +378,27 @@ cv2.putText(
 )
 
 
+cv2.putText(
+
+    output,
+
+    f"Occupancy: {occupancy_rate:.1f}%",
+
+    (20, 125),
+
+    cv2.FONT_HERSHEY_SIMPLEX,
+
+    0.8,
+
+    (255, 255, 255),
+
+    2
+
+)
+
+
 # ==========================================
-# CREATE OUTPUT DIRECTORIES
+# CREATE DIRECTORIES
 # ==========================================
 
 os.makedirs(
@@ -386,9 +424,6 @@ cv2.imwrite(
 
 )
 
-
-# Copy result for dashboard
-
 cv2.imwrite(
 
     STATIC_OUTPUT_PATH,
@@ -399,16 +434,25 @@ cv2.imwrite(
 
 
 # ==========================================
-# CREATE OCCUPANCY DATA
+# SAVE JSON
 # ==========================================
 
 occupancy_data = {
+    
+    "analysis_time": datetime.now().strftime(
+        "%d-%m-%Y %I:%M:%S %p"
+    ),
 
     "total_slots": total,
 
     "occupied": occupied_count,
 
     "vacant": vacant_count,
+
+    "occupancy_rate": round(
+        occupancy_rate,
+        2
+    ),
 
     "slot_status": [
 
@@ -422,10 +466,6 @@ occupancy_data = {
 
 }
 
-
-# ==========================================
-# SAVE JSON
-# ==========================================
 
 with open(
 

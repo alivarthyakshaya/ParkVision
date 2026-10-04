@@ -1,473 +1,267 @@
 # 🚗 ParkVision – Smart Parking Occupancy Detection System
 
-ParkVision is an AI-based smart parking system that automatically detects parking spaces and identifies whether each parking slot is **occupied or vacant** from a parking-lot image.
+## 1. Project Overview
 
-The system uses a **YOLOv8-based parking-space detection model**, parking-slot analysis using **Intersection over Union (IoU)**, and a **Flask web dashboard** to display the parking occupancy information.
+ParkVision is an AI-based smart parking occupancy detection system that uses computer vision to automatically identify parking spaces and determine whether they are occupied or vacant.
 
----
-
-## 📌 Project Overview
-
-Finding an available parking space in crowded parking areas can be time-consuming and inconvenient.
-
-ParkVision provides an automated solution by:
-
-1. Taking a parking-lot image as input.
-2. Detecting parking spaces using a YOLOv8-based model.
-3. Comparing detected parking areas with predefined parking slots.
-4. Calculating IoU to determine occupancy.
-5. Classifying each slot as **OCCUPIED** or **VACANT**.
-6. Saving the results in a JSON file.
-7. Displaying the results through a web-based Flask dashboard.
+The system uses a YOLOv8 model trained on the PKLot parking dataset and provides the detected results through a Flask-based web dashboard.
 
 ---
 
-## 🎯 Objectives
+## 2. Problem Statement
 
-- Automatically detect parking spaces.
-- Determine the occupancy status of individual parking slots.
-- Reduce the need for manual parking-space monitoring.
-- Provide a visual representation of parking occupancy.
-- Display parking statistics through a web dashboard.
-- Create a foundation for a real-time smart parking system.
+Traditional parking systems often require manual monitoring or dedicated hardware to determine parking availability.
+
+ParkVision aims to automatically analyze parking images and provide:
+
+- Total detected parking spaces
+- Occupied parking spaces
+- Vacant parking spaces
+- Occupancy percentage
+- Visual identification of occupied and vacant spaces
 
 ---
 
-## 🏗️ System Architecture
+## 3. Objectives
+
+- Detect parking spaces automatically from an image.
+- Classify each detected space as occupied or vacant.
+- Calculate the overall parking occupancy rate.
+- Display results through a web dashboard.
+- Allow users to upload different parking images.
+- Generate visual detection results automatically.
+
+---
+
+## 4. Proposed Solution
+
+ParkVision uses a YOLOv8s model trained for PKLot parking-space detection.
+
+The uploaded parking image is processed by the AI model. The model detects parking spaces and classifies them into two categories:
+
+- **Occupied**
+- **Vacant**
+
+The detected results are then counted and displayed on the Flask dashboard.
+
+Unlike the initial prototype, the current system does not depend on manually fixed parking-slot coordinates. The parking spaces are detected dynamically from the input image.
+
+---
+
+## 5. System Workflow
+
+1. User uploads a parking image.
+2. Flask receives the image.
+3. The image is stored as the current input image.
+4. YOLOv8s processes the image.
+5. Parking spaces are detected automatically.
+6. Each detected space is classified as occupied or vacant.
+7. Occupied and vacant spaces are counted.
+8. Occupancy percentage is calculated.
+9. Bounding boxes are drawn on the image.
+10. Results are stored in JSON format.
+11. The processed image and statistics are displayed on the dashboard.
+
+---
+
+## 6. AI/ML Approach
+
+### Model
+
+YOLOv8s trained on the PKLot dataset is used for parking-space detection.
+
+### Classes
+
+- Class 0 → Vacant
+- Class 1 → Occupied
+
+### Confidence Threshold
+
+The current detection confidence threshold is:
+
+`0.40`
+
+### IoU / NMS Threshold
+
+The current IoU threshold is:
+
+`0.40`
+
+This helps reduce overlapping duplicate detections.
+
+---
+
+## 7. Occupancy Calculation
+
+The occupancy rate is calculated as:
+
+Occupancy Rate = (Occupied Spaces / Total Detected Spaces) × 100
+
+For example, if 58 out of 110 detected spaces are occupied:
+
+Occupancy Rate = (58 / 110) × 100 = 52.73%
+
+---
+
+## 8. Dashboard
+
+The Flask dashboard displays:
+
+- Total Parking Slots
+- Occupied Slots
+- Vacant Slots
+- Occupancy Rate
+- Occupancy Progress Bar
+- AI Detection Result
+- Occupied/Vacant visual indicators
+
+The dashboard also supports uploading a new parking image and automatically running the detection process.
+
+---
+
+## 9. Technology Stack
+
+### Programming Language
+- Python
+
+### AI/ML
+- YOLOv8
+- PKLot dataset
+- Ultralytics
+
+### Computer Vision
+- OpenCV
+
+### Web Development
+- Flask
+- HTML
+- CSS
+- JavaScript
+
+### Data Storage
+- JSON
+- CSV
+
+### Model Source
+- Hugging Face
+
+---
+
+## 10. Project Structure
 
 ```text
-                Parking Lot Image
-                       │
-                       ▼
-             YOLOv8 Parking Model
-                       │
-                       ▼
-             Parking Space Detection
-                       │
-                       ▼
-             Predefined Parking Slots
-                       │
-                       ▼
-                IoU Calculation
-                       │
-             ┌─────────┴─────────┐
-             ▼                   ▼
-         OCCUPIED             VACANT
-             │                   │
-             └─────────┬─────────┘
-                       ▼
-              occupancy_data.json
-                       │
-                       ▼
-                  Flask API
-                    /data
-                       │
-                       ▼
-              ParkVision Dashboard
-                       │
-                       ▼
-              Occupancy Visualization
-🧠 AI/ML Approach
-YOLOv8
-
-ParkVision uses a YOLOv8-based model trained/selected for parking-space detection.
-
-The model identifies parking-space regions from the input image.
-
-The detected regions are then analyzed against the predefined parking-slot coordinates.
-
-📐 IoU-Based Occupancy Detection
-
-Intersection over Union (IoU) is used to measure the overlap between a predefined parking slot and a detected parking region.
-
-             Area of Intersection
-IoU = ------------------------------------
-             Area of Union
-
-A suitable IoU value is used along with detection confidence to determine whether a parking slot is occupied.
-
-The current system produces results such as:
-
-Slot 1 : OCCUPIED
-Slot 2 : VACANT
-Slot 3 : OCCUPIED
-...
-🅿️ Parking Slot Detection
-
-The current prototype uses predefined parking-slot coordinates.
-
-Example:
-
-{
-    "slots": [
-        [373, 369, 419, 430],
-        [447, 377, 480, 429],
-        [526, 267, 563, 331],
-        [248, 367, 273, 428],
-        [384, 275, 409, 322],
-        [205, 276, 228, 317],
-        [319, 275, 349, 329]
-    ]
-}
-
-Each coordinate represents a parking-slot bounding region in the input image.
-
-📊 Current Detection Result
-
-For the current test image, the system detected:
-
-Total Slots : 7
-Occupied    : 6
-Vacant      : 1
-
-Therefore:
-
-Occupancy Rate = 85.7%
-
-The result is stored in:
-
-phase2_slots/occupancy_data.json
-🌐 Web Dashboard
-
-ParkVision includes a Flask-based web dashboard.
-
-The dashboard displays:
-
-Total parking slots
-Occupied slots
-Vacant slots
-Occupancy percentage
-Parking detection image
-Individual parking-slot status
-Refresh functionality
-Automatic data updates
-🖥️ Dashboard Features
-1. Total Slots
-
-Displays the total number of monitored parking spaces.
-
-2. Occupied Slots
-
-Displays the number of currently occupied spaces.
-
-3. Vacant Slots
-
-Displays the number of available spaces.
-
-4. Occupancy Rate
-
-The dashboard calculates:
-
-Occupancy Rate =
-(Occupied Slots / Total Slots) × 100
-5. Parking Detection Image
-
-The dashboard displays the processed parking image with detected parking spaces.
-
-6. Slot Status
-
-Each parking slot is displayed individually as:
-
-Slot 1 → OCCUPIED
-Slot 2 → VACANT
-Slot 3 → OCCUPIED
-7. Automatic Dashboard Updates
-
-The dashboard checks the Flask /data endpoint every 5 seconds and updates the displayed statistics.
-
-🛠️ Technology Stack
-Programming Language
-Python
-Machine Learning
-YOLOv8
-Computer Vision
-Intersection over Union (IoU)
-Backend
-Flask
-Frontend
-HTML
-CSS
-JavaScript
-Data Storage
-JSON
-Dataset
-PKLot-based parking dataset
-📂 Project Structure
 ParkVision/
 │
 ├── dataset/
 │   └── images/
 │       ├── parking.jpg
+│       ├── parking2.jpg
+│       ├── parking3.jpg
+│       ├── parking4.jpg
+│       ├── parking5.jpg
 │       └── pklot_original.jpg
 │
 ├── phase2_slots/
-│   │
 │   ├── occupancy.py
+│   ├── dashboard.py
+│   ├── test_system.py
 │   ├── occupancy_data.json
 │   ├── occupancy_result.jpg
+│   ├── test_report.csv
 │   │
 │   ├── static/
 │   │   └── occupancy_result.jpg
 │   │
-│   └── templates/
-│       └── dashboard.html
+│   ├── templates/
+│   │   └── dashboard.html
+│   │
+│   └── uploads/
+│       └── parking.jpg
 │
-├── README.md
-│
-└── venv/
-📄 Important Files
-occupancy.py
+└── README.md
+11. Testing and Evaluation
 
-Responsible for:
+The system was tested using 6 image files.
 
-Loading the parking image.
-Loading the parking detection model.
-Detecting parking spaces.
-Comparing detected regions with predefined slots.
-Calculating IoU.
-Determining occupancy.
-Generating the output image.
-Saving occupancy information.
-occupancy_data.json
+One image (pklot_original.jpg) is a duplicate of parking.jpg, so there are effectively 5 unique test images.
 
-Stores the detected parking information.
+Test Results
+Image	Total Slots	Occupied	Vacant	Occupancy
+parking.jpg	110	58	52	52.73%
+parking2.jpg	142	20	122	14.08%
+parking3.jpg	96	94	2	97.92%
+parking4.jpg	116	114	2	98.28%
+parking5.jpg	78	10	68	12.82%
+pklot_original.jpg	110	58	52	52.73%
 
-Example:
+Average detection confidence across the tested images was approximately in the range of 0.696–0.813.
 
-{
-    "total_slots": 7,
-    "occupied": 6,
-    "vacant": 1
-}
-dashboard.py
+12. Important Evaluation Note
 
-Flask backend responsible for:
+The above occupancy percentages represent the model's detected parking-space results.
 
-Starting the web server.
-Loading occupancy data.
-Rendering the dashboard.
-Providing the /data API endpoint.
-dashboard.html
+They should not be treated as model accuracy, because ground-truth labels for these test images were not available.
 
-Frontend interface responsible for displaying:
+Therefore, the current testing evaluates the system's detection output and consistency rather than calculating precision, recall, F1-score, or true classification accuracy.
 
-Parking statistics
-Occupancy percentage
-Parking detection image
-Individual slot statuses
-Automatic updates
-⚙️ Installation
-1. Clone or open the project
+13. Advantages
+Automatic parking-space detection
+No manually fixed slot coordinates
+Supports different parking images
+AI-based occupied/vacant classification
+Web-based dashboard
+Visual detection output
+Easy image upload
+Automatic occupancy calculation
+14. Limitations
+The model is trained on PKLot-style parking images.
+Detection performance may decrease on images with significantly different camera angles or environments.
+The current prototype processes images rather than continuous live video.
+Ground-truth annotated data is required for proper accuracy evaluation.
+15. Future Scope
+Real-time CCTV/video processing
+Automatic parking-space availability prediction
+Vehicle tracking
+Number-plate recognition
+Parking navigation
+Cloud deployment
+Mobile application
+Historical occupancy analytics
+Database integration
+Advanced model evaluation using precision, recall and F1-score
+16. Current Project Status
 
-Open the project directory:
+The current prototype successfully includes:
 
-C:\Users\Akshaya\Documents\GitHub\ParkVision\ParkVision
-2. Create/activate the virtual environment
+Dynamic parking-space detection
+Occupied/vacant classification
+Occupancy calculation
+Image upload
+Flask dashboard
+Detection visualization
+JSON result storage
+Automated system testing
+CSV test report generation
+17. How to Run
 
 Activate the virtual environment:
 
-venv\Scripts\activate
+.\venv\Scripts\Activate.ps1
 
-You should see:
-
-(venv)
-
-at the beginning of the PowerShell prompt.
-
-3. Install required packages
-
-Install Flask:
-
-pip install flask
-
-Install the required computer-vision/ML packages according to the model used by the project.
-
-▶️ How to Run
-Step 1 – Run Occupancy Detection
-
-From the project root:
-
-python phase2_slots\occupancy.py
-
-The program processes the parking image and generates the occupancy information.
-
-Step 2 – Start the Dashboard
-
-Run:
+Run the dashboard:
 
 python phase2_slots\dashboard.py
 
-The Flask server starts at:
+Open:
 
 http://127.0.0.1:5050/
 
-Open this address in a web browser.
+Upload a parking image and click:
 
-🔄 Complete Workflow
+🔍 Upload & Analyze
 
-The complete ParkVision workflow is:
+18. Conclusion
 
-1. Input Parking Image
-          ↓
-2. Load YOLOv8 Parking Model
-          ↓
-3. Detect Parking Spaces
-          ↓
-4. Load Predefined Parking Slots
-          ↓
-5. Calculate IoU
-          ↓
-6. Determine Occupancy
-          ↓
-7. Generate Occupancy Result Image
-          ↓
-8. Save occupancy_data.json
-          ↓
-9. Flask Loads JSON Data
-          ↓
-10. Dashboard Displays Results
-          ↓
-11. Dashboard Updates Data Automatically
-📈 Example Output
+ParkVision demonstrates an AI-based approach for automatically detecting parking-space occupancy using YOLOv8 and computer vision. The system dynamically detects parking spaces, classifies their occupancy status, calculates occupancy statistics, and presents the results through an interactive Flask dashboard.
 
-For the current test image:
-
---------------------------------
-Parking Occupancy Result
---------------------------------
-
-Total slots : 7
-Occupied    : 6
-Vacant      : 1
-
-Occupancy rate : 85.7%
-
-The dashboard then displays the same information visually.
-
-🔌 Flask API
-
-ParkVision provides a data endpoint:
-
-GET /data
-
-When the dashboard requests:
-
-http://127.0.0.1:5050/data
-
-the Flask server returns the latest occupancy information in JSON format.
-
-This allows the frontend to update the statistics without manually reloading the entire page.
-
-📊 Dashboard Data Flow
-occupancy_data.json
-        │
-        ▼
-     Flask
-        │
-        ▼
-     /data API
-        │
-        ▼
-   JavaScript fetch()
-        │
-        ▼
- Dashboard Statistics
-
-The dashboard currently checks the /data endpoint every 5 seconds.
-
-🎯 Current Project Status
-Feature	Status
-PKLot-based image	✅ Completed
-Parking-space detection	✅ Completed
-Parking-slot coordinates	✅ Completed
-IoU-based occupancy analysis	✅ Completed
-Occupied/Vacant classification	✅ Completed
-JSON occupancy data	✅ Completed
-Flask backend	✅ Completed
-Web dashboard	✅ Completed
-Parking result image	✅ Completed
-Automatic dashboard update	✅ Completed
-Real-time camera input	🔄 Future work
-Live parking-space reservation	🔄 Future work
-Multi-camera support	🔄 Future work
-🚀 Future Scope
-
-The current prototype can be extended into a complete smart parking platform.
-
-1. Real-Time Camera Integration
-
-Connect CCTV/IP cameras or video streams to continuously monitor parking spaces.
-
-2. Automatic Slot Detection
-
-Instead of manually defining parking-slot coordinates, a future version can automatically identify parking spaces.
-
-3. Live Occupancy Monitoring
-
-The system can continuously update parking availability from live camera feeds.
-
-4. Parking Availability Search
-
-Users can be shown the currently available parking-slot numbers.
-
-Example:
-
-Available Slots:
-Slot 2
-Slot 5
-Slot 7
-5. Multiple Parking Areas
-
-The system can monitor multiple parking lots or floors.
-
-6. Database Integration
-
-JSON storage can be replaced or extended with a database such as MySQL or MongoDB.
-
-7. Mobile Application
-
-A mobile application can provide parking availability information to users.
-
-8. Historical Analytics
-
-The system can store historical occupancy data and generate:
-
-Daily occupancy
-Peak parking hours
-Average occupancy
-Parking utilization trends
-🔐 Limitations
-
-The current prototype has some limitations:
-
-The current demonstration uses a parking image rather than a live camera stream.
-Parking-slot coordinates are currently predefined.
-Detection performance depends on image quality, camera angle, lighting, and model performance.
-The current implementation is a prototype and is not yet connected to a real parking-management system.
-💡 Advantages
-Automated parking-space monitoring
-Reduces manual observation
-Provides visual occupancy information
-Easy-to-use web dashboard
-Can be extended to real-time camera systems
-Supports further AI-based parking analytics
-🧪 Testing
-
-The system can be tested using parking-lot images.
-
-Testing involves:
-
-Providing a parking image.
-Running the occupancy detection program.
-Checking detected parking spaces.
-Checking occupied/vacant classifications.
-Verifying occupancy_data.json.
-Starting the Flask dashboard.
-Comparing dashboard results with the generated detection image.
-📝 Conclusion
-
-ParkVision demonstrates an AI-based approach for automated parking occupancy detection.
-
-By combining YOLOv8-based computer vision, IoU-based parking analysis, JSON data processing, and a Flask web dashboard, the system can identify occupied and vacant parking spaces and present the information in an easy-to-understand interface.
-
-The current prototype provides the foundation for developing a more advanced real-time smart parking management system.
+The current prototype establishes the core functionality and provides a foundation for future real-time smart parking applications.
