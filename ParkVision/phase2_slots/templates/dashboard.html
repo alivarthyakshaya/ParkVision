@@ -1,613 +1,537 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>ParkVision | Smart Parking Dashboard</title>
+    <title>
+        ParkVision
+    </title>
+
 
     <style>
 
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
+
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #1f2937;
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                #f4f7fb;
+
+            color:
+                #1f2937;
         }
 
 
-        /* ==============================
+        /* =========================
            HEADER
-        ============================== */
+        ========================= */
 
         .header {
-            background: linear-gradient(135deg, #111827, #1f3b5b);
-            color: white;
-            padding: 25px 40px;
 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background:
+                #111827;
 
-            flex-wrap: wrap;
-            gap: 15px;
+            color:
+                white;
+
+            padding:
+                22px 35px;
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
         }
+
 
         .header h1 {
-            font-size: 30px;
+
+            margin: 0;
+
+            font-size:
+                28px;
         }
+
 
         .header p {
-            margin-top: 5px;
-            color: #d1d5db;
-            font-size: 14px;
-        }
 
-        .system-status {
-            background: #16a34a;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
+            margin:
+                6px 0 0;
+
+            color:
+                #cbd5e1;
         }
 
 
-        /* ==============================
-           MAIN
-        ============================== */
+        .status {
+
+            color:
+                #22c55e;
+
+            font-weight:
+                bold;
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
 
         .container {
-            max-width: 1250px;
-            margin: 30px auto;
-            padding: 0 20px;
+
+            max-width:
+                1200px;
+
+            margin:
+                30px auto;
+
+            padding:
+                0 20px;
         }
 
 
-        /* ==============================
-           UPLOAD
-        ============================== */
-
-        .upload-box {
-            background: white;
-            padding: 25px;
-            border-radius: 14px;
-
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.07);
-
-            margin-bottom: 25px;
-        }
-
-        .upload-box h2 {
-            margin-bottom: 8px;
-            font-size: 21px;
-        }
-
-        .upload-box p {
-            color: #6b7280;
-            margin-bottom: 18px;
-            font-size: 14px;
-        }
-
-        .upload-form {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        input[type="file"] {
-            padding: 10px;
-
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-
-            background: #f9fafb;
-        }
-
-        button {
-            border: none;
-            background: #2563eb;
-            color: white;
-
-            padding: 11px 20px;
-
-            border-radius: 8px;
-
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background: #1d4ed8;
-        }
-
-
-        /* ==============================
-           STATISTICS
-        ============================== */
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-
-            gap: 18px;
-
-            margin-bottom: 25px;
-        }
+        /* =========================
+           CARDS
+        ========================= */
 
         .card {
-            background: white;
-            padding: 22px;
 
-            border-radius: 14px;
+            background:
+                white;
+
+            border-radius:
+                14px;
+
+            padding:
+                24px;
+
+            margin-bottom:
+                22px;
 
             box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.07);
+                0 4px 15px
+                rgba(0,0,0,0.06);
         }
 
-        .card-title {
-            font-size: 14px;
-            color: #6b7280;
-            margin-bottom: 10px;
+
+        .card h2 {
+
+            margin-top:
+                0;
         }
 
-        .card-value {
-            font-size: 32px;
-            font-weight: bold;
+
+        /* =========================
+           UPLOAD
+        ========================= */
+
+        .upload-form {
+
+            display:
+                flex;
+
+            gap:
+                12px;
+
+            flex-wrap:
+                wrap;
         }
 
-        .total {
-            color: #2563eb;
+
+        input[type="file"] {
+
+            padding:
+                10px;
+
+            border:
+                1px solid #d1d5db;
+
+            border-radius:
+                8px;
         }
+
+
+        button {
+
+            background:
+                #2563eb;
+
+            color:
+                white;
+
+            border:
+                none;
+
+            padding:
+                11px 20px;
+
+            border-radius:
+                8px;
+
+            cursor:
+                pointer;
+
+            font-weight:
+                bold;
+        }
+
+
+        button:hover {
+
+            background:
+                #1d4ed8;
+        }
+
+
+        /* =========================
+           STATISTICS
+        ========================= */
+
+        .stats {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap:
+                18px;
+
+            margin-bottom:
+                22px;
+        }
+
+
+        .stat-card {
+
+            background:
+                white;
+
+            padding:
+                22px;
+
+            border-radius:
+                14px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.06);
+        }
+
+
+        .stat-title {
+
+            color:
+                #64748b;
+
+            font-size:
+                14px;
+        }
+
+
+        .stat-value {
+
+            font-size:
+                30px;
+
+            font-weight:
+                bold;
+
+            margin-top:
+                8px;
+        }
+
+
+        /* =========================
+           SUMMARY
+        ========================= */
+
+        .summary-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                20px;
+        }
+
+
+        .summary-box {
+
+            padding:
+                20px;
+
+            border-radius:
+                12px;
+
+            background:
+                #f8fafc;
+        }
+
 
         .occupied {
-            color: #dc2626;
+
+            color:
+                #dc2626;
         }
+
 
         .vacant {
-            color: #16a34a;
-        }
 
-        .rate {
-            color: #7c3aed;
-        }
-
-
-        /* ==============================
-           SLOT STATUS SUMMARY
-        ============================== */
-
-        .slot-summary {
-            background: white;
-
-            padding: 25px;
-
-            border-radius: 14px;
-
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.07);
-
-            margin-bottom: 25px;
-        }
-
-        .slot-summary h2 {
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-
-        .slot-counts {
-            display: grid;
-
-            grid-template-columns: 1fr 1fr;
-
-            gap: 18px;
-
-            margin-bottom: 22px;
-        }
-
-        .slot-count {
-            padding: 18px;
-
-            border-radius: 12px;
-
-            background: #f8fafc;
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-        }
-
-        .slot-count-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .slot-number {
-            font-size: 25px;
-            font-weight: bold;
-        }
-
-        .slot-label {
-            color: #6b7280;
-            font-size: 14px;
-        }
-
-        .slot-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-        }
-
-        .occupied-dot {
-            background: #dc2626;
-        }
-
-        .vacant-dot {
-            background: #16a34a;
+            color:
+                #16a34a;
         }
 
 
-        /* ==============================
-           OCCUPIED / VACANT VISUAL BAR
-        ============================== */
+        /* =========================
+           AVAILABILITY
+        ========================= */
 
-        .status-bar-title {
-            display: flex;
+        .availability {
 
-            justify-content: space-between;
+            padding:
+                18px;
 
-            margin-bottom: 9px;
+            border-radius:
+                12px;
 
-            font-size: 14px;
+            background:
+                #f8fafc;
 
-            font-weight: bold;
-        }
+            margin-top:
+                18px;
 
-        .status-bar {
-            width: 100%;
-
-            height: 25px;
-
-            background: #e5e7eb;
-
-            border-radius: 20px;
-
-            overflow: hidden;
-
-            display: flex;
-        }
-
-        .occupied-bar {
-            height: 100%;
-
-            background: #dc2626;
-
-            width: 0%;
-
-            transition: width 0.5s ease;
-        }
-
-        .vacant-bar {
-            height: 100%;
-
-            background: #16a34a;
-
-            width: 0%;
-
-            transition: width 0.5s ease;
-        }
-
-        .bar-legend {
-            display: flex;
-
-            justify-content: center;
-
-            gap: 25px;
-
-            margin-top: 12px;
-
-            font-size: 13px;
-
-            color: #6b7280;
+            font-weight:
+                bold;
         }
 
 
-        /* ==============================
-           PARKING AVAILABILITY
-        ============================== */
-
-        .availability-card {
-            background: white;
-
-            padding: 22px;
-
-            border-radius: 14px;
-
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.07);
-
-            margin-bottom: 25px;
-
-            text-align: center;
-        }
-
-        .availability-card h2 {
-            margin-bottom: 15px;
-            font-size: 20px;
-        }
-
-        .availability-status {
-            display: inline-block;
-
-            padding: 12px 25px;
-
-            border-radius: 25px;
-
-            background: #16a34a;
-
-            color: white;
-
-            font-size: 18px;
-
-            font-weight: bold;
-
-            transition: 0.3s ease;
-        }
-
-        .availability-message {
-            margin-top: 12px;
-
-            color: #6b7280;
-
-            font-size: 14px;
-        }
-
-
-        /* ==============================
-           PROGRESS BAR
-        ============================== */
-
-        .progress-card {
-            background: white;
-
-            padding: 22px;
-
-            border-radius: 14px;
-
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.07);
-
-            margin-bottom: 25px;
-        }
-
-        .progress-header {
-            display: flex;
-
-            justify-content: space-between;
-
-            margin-bottom: 10px;
-
-            font-weight: bold;
-        }
+        /* =========================
+           PROGRESS
+        ========================= */
 
         .progress {
-            height: 15px;
 
-            background: #e5e7eb;
+            width:
+                100%;
 
-            border-radius: 20px;
+            height:
+                18px;
 
-            overflow: hidden;
+            background:
+                #e5e7eb;
+
+            border-radius:
+                20px;
+
+            overflow:
+                hidden;
         }
+
 
         .progress-bar {
-            height: 100%;
 
-            background: #7c3aed;
+            height:
+                100%;
 
-            width: 0%;
+            background:
+                #2563eb;
 
-            transition: width 0.5s ease;
+            transition:
+                width 0.5s;
         }
 
 
-        /* ==============================
-           AI RESULT
-        ============================== */
+        /* =========================
+           UNIQUE FEATURES
+        ========================= */
 
-        .result-section {
-            background: white;
+        .feature-grid {
 
-            padding: 25px;
+            display:
+                grid;
 
-            border-radius: 14px;
+            grid-template-columns:
+                repeat(3, 1fr);
 
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.07);
-
-            margin-bottom: 25px;
+            gap:
+                18px;
         }
 
-        .result-section h2 {
-            margin-bottom: 18px;
+
+        .feature {
+
+            background:
+                #f8fafc;
+
+            padding:
+                20px;
+
+            border-radius:
+                12px;
+
+            border:
+                1px solid #e5e7eb;
         }
+
+
+        .feature h3 {
+
+            margin-top:
+                0;
+        }
+
+
+        .prediction-value {
+
+            font-size:
+                30px;
+
+            font-weight:
+                bold;
+
+            color:
+                #7c3aed;
+        }
+
+
+        .recommendations {
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                8px;
+        }
+
+
+        .slot {
+
+            padding:
+                8px 12px;
+
+            background:
+                #dcfce7;
+
+            color:
+                #166534;
+
+            border-radius:
+                20px;
+
+            font-weight:
+                bold;
+        }
+
+
+        .warning {
+
+            color:
+                #ea580c;
+
+            font-weight:
+                bold;
+        }
+
+
+        /* =========================
+           RESULT IMAGE
+        ========================= */
 
         .result-image {
-            width: 100%;
 
-            max-height: 700px;
+            width:
+                100%;
 
-            object-fit: contain;
+            max-height:
+                650px;
 
-            border-radius: 10px;
+            object-fit:
+                contain;
 
-            background: #111827;
+            border-radius:
+                12px;
+
+            background:
+                #111827;
         }
 
 
-        /* ==============================
-           LEGEND
-        ============================== */
-
-        .legend {
-            display: flex;
-
-            gap: 25px;
-
-            margin-top: 15px;
-
-            flex-wrap: wrap;
-        }
-
-        .legend-item {
-            display: flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            font-size: 14px;
-        }
-
-        .dot {
-            width: 13px;
-            height: 13px;
-
-            border-radius: 50%;
-        }
-
-        .red {
-            background: #dc2626;
-        }
-
-        .green {
-            background: #16a34a;
-        }
-
-
-        /* ==============================
-           LAST ANALYSIS
-        ============================== */
-
-        .analysis-card {
-            background: white;
-
-            padding: 22px;
-
-            border-radius: 14px;
-
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.07);
-
-            margin-bottom: 25px;
-        }
-
-        .analysis-card h2 {
-            margin-bottom: 18px;
-
-            font-size: 20px;
-        }
-
-        .analysis-grid {
-            display: grid;
-
-            grid-template-columns: repeat(4, 1fr);
-
-            gap: 15px;
-        }
-
-        .analysis-grid div {
-            background: #f8fafc;
-
-            padding: 15px;
-
-            border-radius: 10px;
-        }
-
-        .analysis-grid span {
-            display: block;
-
-            color: #6b7280;
-
-            font-size: 13px;
-
-            margin-bottom: 7px;
-        }
-
-        .analysis-grid strong {
-            font-size: 16px;
-
-            color: #1f2937;
-        }
-
-
-        /* ==============================
+        /* =========================
            FOOTER
-        ============================== */
+        ========================= */
 
         footer {
-            text-align: center;
 
-            color: #6b7280;
+            text-align:
+                center;
 
-            font-size: 13px;
+            padding:
+                25px;
 
-            padding: 25px;
+            color:
+                #64748b;
         }
 
 
-        /* ==============================
+        /* =========================
            RESPONSIVE
-        ============================== */
+        ========================= */
 
-        @media (max-width: 900px) {
+        @media
+        (max-width: 800px) {
 
             .stats {
-                grid-template-columns: repeat(2, 1fr);
+
+                grid-template-columns:
+                    1fr 1fr;
             }
 
-            .analysis-grid {
-                grid-template-columns: repeat(2, 1fr);
+
+            .feature-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .summary-grid {
+
+                grid-template-columns:
+                    1fr;
             }
 
         }
 
-
-        @media (max-width: 600px) {
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .slot-counts {
-                grid-template-columns: 1fr;
-            }
-
-            .analysis-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .header {
-                padding: 20px;
-            }
-
-            .header h1 {
-                font-size: 24px;
-            }
-
-        }
 
     </style>
 
@@ -617,47 +541,54 @@
 <body>
 
 
-    <!-- ==============================
+    <!-- =========================
          HEADER
-    ============================== -->
+    ========================= -->
 
     <div class="header">
 
         <div>
 
-            <h1>🚗 ParkVision</h1>
+            <h1>
+                🚗 ParkVision
+            </h1>
 
             <p>
-                AI-Based Smart Parking Occupancy Detection System
+                AI-Based Smart Parking
+                Occupancy Detection System
             </p>
 
         </div>
 
-        <div class="system-status">
+
+        <div class="status">
+
             ● AI SYSTEM ACTIVE
+
         </div>
 
     </div>
 
 
+
     <div class="container">
 
 
-        <!-- ==============================
+        <!-- =========================
              UPLOAD
-        ============================== -->
+        ========================= -->
 
-        <div class="upload-box">
+        <div class="card">
 
             <h2>
                 📤 Upload Parking Image
             </h2>
 
             <p>
-                Upload a parking-lot image to automatically
-                detect parking spaces and classify them as
-                occupied or vacant.
+                Upload a parking-lot image
+                to analyze occupancy.
             </p>
+
 
             <form
                 class="upload-form"
@@ -669,11 +600,14 @@
                 <input
                     type="file"
                     name="image"
-                    accept="image/*"
+                    accept=".jpg,.jpeg,.png"
                     required
                 >
 
-                <button type="submit">
+
+                <button
+                    type="submit"
+                >
                     🔍 Upload & Analyze
                 </button>
 
@@ -682,21 +616,22 @@
         </div>
 
 
-        <!-- ==============================
-             MAIN STATISTICS
-        ============================== -->
+
+        <!-- =========================
+             STATISTICS
+        ========================= -->
 
         <div class="stats">
 
 
-            <div class="card">
+            <div class="stat-card">
 
-                <div class="card-title">
-                    Total Parking Slots
+                <div class="stat-title">
+                    Total Slots
                 </div>
 
                 <div
-                    class="card-value total"
+                    class="stat-value"
                     id="totalSlots"
                 >
                     {{ data.total_slots }}
@@ -705,14 +640,14 @@
             </div>
 
 
-            <div class="card">
+            <div class="stat-card">
 
-                <div class="card-title">
+                <div class="stat-title">
                     Occupied
                 </div>
 
                 <div
-                    class="card-value occupied"
+                    class="stat-value occupied"
                     id="occupiedSlots"
                 >
                     {{ data.occupied }}
@@ -721,14 +656,14 @@
             </div>
 
 
-            <div class="card">
+            <div class="stat-card">
 
-                <div class="card-title">
+                <div class="stat-title">
                     Vacant
                 </div>
 
                 <div
-                    class="card-value vacant"
+                    class="stat-value vacant"
                     id="vacantSlots"
                 >
                     {{ data.vacant }}
@@ -737,203 +672,250 @@
             </div>
 
 
-            <div class="card">
+            <div class="stat-card">
 
-                <div class="card-title">
-                    Occupancy Rate
+                <div class="stat-title">
+                    Occupancy
                 </div>
 
                 <div
-                    class="card-value rate"
+                    class="stat-value"
                     id="occupancyRate"
                 >
-                    {{ data.occupancy_rate|default(0) }}%
+                    {{ data.occupancy_rate }}%
                 </div>
 
             </div>
 
-
         </div>
 
 
-        <!-- ==============================
-             SLOT STATUS SUMMARY
-        ============================== -->
 
-        <div class="slot-summary">
+        <!-- =========================
+             SLOT SUMMARY
+        ========================= -->
+
+        <div class="card">
 
             <h2>
-                🅿️ Slot Status Summary
+                🅿️ Parking Summary
             </h2>
 
 
-            <div class="slot-counts">
+            <div class="summary-grid">
 
 
-                <!-- OCCUPIED -->
+                <div class="summary-box">
 
-                <div class="slot-count">
+                    <h3 class="occupied">
+                        🔴 Occupied
+                    </h3>
 
-                    <div class="slot-count-left">
-
-                        <span class="slot-dot occupied-dot"></span>
-
-                        <div>
-
-                            <div class="slot-label">
-                                Occupied Slots
-                            </div>
-
-                            <div
-                                class="slot-number occupied"
-                                id="summaryOccupied"
-                            >
-                                {{ data.occupied }}
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <strong
-                        id="occupiedPercentage"
-                    >
-                        0%
-                    </strong>
+                    <p>
+                        <span id="occupiedSummary">
+                            {{ data.occupied }}
+                        </span>
+                        parking spaces occupied.
+                    </p>
 
                 </div>
 
 
-                <!-- VACANT -->
+                <div class="summary-box">
 
-                <div class="slot-count">
+                    <h3 class="vacant">
+                        🟢 Vacant
+                    </h3>
 
-                    <div class="slot-count-left">
+                    <p>
+                        <span id="vacantSummary">
+                            {{ data.vacant }}
+                        </span>
+                        parking spaces available.
+                    </p>
 
-                        <span class="slot-dot vacant-dot"></span>
-
-                        <div>
-
-                            <div class="slot-label">
-                                Vacant Slots
-                            </div>
-
-                            <div
-                                class="slot-number vacant"
-                                id="summaryVacant"
-                            >
-                                {{ data.vacant }}
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <strong
-                        id="vacantPercentage"
-                    >
-                        0%
-                    </strong>
-
-                </div>
-
-
-            </div>
-
-
-            <!-- VISUAL BAR -->
-
-            <div class="status-bar-title">
-
-                <span>
-                    Occupied vs Vacant
-                </span>
-
-                <span id="statusTotal">
-                    Total: 0
-                </span>
-
-            </div>
-
-
-            <div class="status-bar">
-
-                <div
-                    class="occupied-bar"
-                    id="occupiedBar"
-                >
-                </div>
-
-                <div
-                    class="vacant-bar"
-                    id="vacantBar"
-                >
                 </div>
 
             </div>
 
 
-            <div class="bar-legend">
+            <div
+                class="availability"
+                id="availability"
+            >
 
-                <span>
-                    🔴 Occupied
-                </span>
-
-                <span>
-                    🟢 Vacant
-                </span>
+                {{ data.availability_status }}
 
             </div>
 
         </div>
 
 
-        <!-- ==============================
-             PARKING AVAILABILITY
-        ============================== -->
 
-        <div class="availability-card">
+        <!-- =========================
+             UNIQUE FEATURES
+        ========================= -->
+
+        <div class="card">
 
             <h2>
-                🅿️ Parking Availability
+                🧠 Intelligent Parking Insights
             </h2>
 
-            <div
-                id="availabilityStatus"
-                class="availability-status"
-            >
-                🟢 Plenty of Parking
-            </div>
 
-            <div
-                id="availabilityMessage"
-                class="availability-message"
-            >
-                Parking availability is good.
+            <div class="feature-grid">
+
+
+                <!-- PREDICTION -->
+
+                <div class="feature">
+
+                    <h3>
+                        📈 Demand Prediction
+                    </h3>
+
+                    <p>
+                        Estimated next occupancy
+                    </p>
+
+
+                    <div
+                        class="prediction-value"
+                        id="predictedOccupancy"
+                    >
+
+                        {% if data.predicted_occupancy
+                           is not none %}
+
+                            {{ data.predicted_occupancy }}%
+
+                        {% else %}
+
+                            --
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <p id="predictionMessage">
+
+                        {{ data.prediction_message }}
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- RECOMMENDATION -->
+
+                <div class="feature">
+
+                    <h3>
+                        🅿️ Smart Recommendation
+                    </h3>
+
+                    <p>
+                        Recommended vacant slots
+                    </p>
+
+
+                    <div
+                        class="recommendations"
+                        id="recommendedSlots"
+                    >
+
+                        {% if data.recommended_slots %}
+
+                            {% for slot in
+                                data.recommended_slots %}
+
+                                <span class="slot">
+
+                                    Slot {{ slot }}
+
+                                </span>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <span>
+                                No recommendation
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CONFIDENCE -->
+
+                <div class="feature">
+
+                    <h3>
+                        🔍 AI Confidence
+                    </h3>
+
+                    <p>
+                        Low-confidence detections
+                    </p>
+
+
+                    <div
+                        class="prediction-value"
+                        id="lowConfidence"
+                    >
+
+                        {{ data.low_confidence_count }}
+
+                    </div>
+
+
+                    <p>
+
+                        <span
+                            class="warning"
+                        >
+                            ⚠ Review uncertain
+                            detections
+                        </span>
+
+                    </p>
+
+                </div>
+
             </div>
 
         </div>
 
 
-        <!-- ==============================
+
+        <!-- =========================
              OCCUPANCY PROGRESS
-        ============================== -->
+        ========================= -->
 
-        <div class="progress-card">
+        <div class="card">
 
-            <div class="progress-header">
+            <h2>
+                📊 Parking Occupancy
+            </h2>
 
-                <span>
-                    Parking Occupancy
-                </span>
 
-                <span id="progressText">
+            <p>
 
-                    {{ data.occupancy_rate|default(0) }}%
+                Current occupancy:
+                <strong
+                    id="progressText"
+                >
+                    {{ data.occupancy_rate }}%
+                </strong>
 
-                </span>
-
-            </div>
+            </p>
 
 
             <div class="progress">
@@ -943,7 +925,7 @@
                     id="progressBar"
                     style="
                         width:
-                        {{ data.occupancy_rate|default(0) }}%;
+                        {{ data.occupancy_rate }}%;
                     "
                 >
                 </div>
@@ -953,11 +935,12 @@
         </div>
 
 
-        <!-- ==============================
-             AI RESULT
-        ============================== -->
 
-        <div class="result-section">
+        <!-- =========================
+             AI RESULT
+        ========================= -->
+
+        <div class="card">
 
             <h2>
                 🧠 AI Detection Result
@@ -966,119 +949,52 @@
 
             <img
                 id="resultImage"
-
                 class="result-image"
-
-                src="{{ url_for(
-                    'static',
-                    filename='occupancy_result.jpg'
-                ) }}"
-
+                src="{{
+                    url_for(
+                        'static',
+                        filename=
+                        'occupancy_result.jpg'
+                    )
+                }}"
                 alt="Parking detection result"
             >
 
 
-            <div class="legend">
+            <p>
 
-                <div class="legend-item">
+                🔴 Occupied
 
-                    <span class="dot red"></span>
+                &nbsp;&nbsp;&nbsp;
 
-                    Occupied
+                🟢 Vacant
 
-                </div>
+                &nbsp;&nbsp;&nbsp;
 
+                🟠 Low Confidence
 
-                <div class="legend-item">
-
-                    <span class="dot green"></span>
-
-                    Vacant
-
-                </div>
-
-            </div>
+            </p>
 
         </div>
 
 
-        <!-- ==============================
-             LAST ANALYSIS
-        ============================== -->
 
-        <div class="analysis-card">
+        <!-- =========================
+             LAST ANALYSIS
+        ========================= -->
+
+        <div class="card">
 
             <h2>
-                📊 Last Analysis
+                🕒 Last Analysis
             </h2>
 
+            <p id="analysisTime">
 
-            <div class="analysis-grid">
+                {{ data.analysis_time
+                   |default("No analysis yet") }}
 
-
-                <div>
-
-                    <span>
-                        Analysis Time
-                    </span>
-
-                    <strong id="analysisTime">
-
-                        {{ data.analysis_time|default(
-                            "Not available"
-                        ) }}
-
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <span>
-                        Detected Spaces
-                    </span>
-
-                    <strong id="analysisSlots">
-
-                        {{ data.total_slots|default(0) }}
-
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <span>
-                        Occupied
-                    </span>
-
-                    <strong id="analysisOccupied">
-
-                        {{ data.occupied|default(0) }}
-
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <span>
-                        Vacant
-                    </span>
-
-                    <strong id="analysisVacant">
-
-                        {{ data.vacant|default(0) }}
-
-                    </strong>
-
-                </div>
-
-
-            </div>
+            </p>
 
         </div>
 
@@ -1086,9 +1002,10 @@
     </div>
 
 
-    <!-- ==============================
+
+    <!-- =========================
          FOOTER
-    ============================== -->
+    ========================= -->
 
     <footer>
 
@@ -1101,163 +1018,16 @@
     </footer>
 
 
-    <!-- ==============================
+
+    <!-- =========================
          JAVASCRIPT
-    ============================== -->
+    ========================= -->
 
     <script>
 
 
-        /* ==============================
-           PARKING AVAILABILITY
-        ============================== */
-
-        function updateAvailability(rate) {
-
-            const status =
-                document.getElementById(
-                    "availabilityStatus"
-                );
-
-            const message =
-                document.getElementById(
-                    "availabilityMessage"
-                );
-
-
-            if (rate < 50) {
-
-                status.textContent =
-                    "🟢 Plenty of Parking";
-
-                status.style.background =
-                    "#16a34a";
-
-                message.textContent =
-                    "Parking availability is good.";
-
-            }
-
-            else if (rate <= 80) {
-
-                status.textContent =
-                    "🟡 Limited Parking";
-
-                status.style.background =
-                    "#d97706";
-
-                message.textContent =
-                    "Parking spaces are becoming limited.";
-
-            }
-
-            else {
-
-                status.textContent =
-                    "🔴 Nearly Full";
-
-                status.style.background =
-                    "#dc2626";
-
-                message.textContent =
-                    "Very few parking spaces are available.";
-
-            }
-
-        }
-
-
-        /* ==============================
-           SLOT STATUS SUMMARY
-        ============================== */
-
-        function updateSlotSummary(
-            total,
-            occupied,
-            vacant
-        ) {
-
-            document.getElementById(
-                "summaryOccupied"
-            ).textContent = occupied;
-
-
-            document.getElementById(
-                "summaryVacant"
-            ).textContent = vacant;
-
-
-            document.getElementById(
-                "statusTotal"
-            ).textContent =
-                "Total: " + total;
-
-
-            if (total > 0) {
-
-                const occupiedPercentage =
-                    (occupied / total) * 100;
-
-                const vacantPercentage =
-                    (vacant / total) * 100;
-
-
-                document.getElementById(
-                    "occupiedPercentage"
-                ).textContent =
-                    occupiedPercentage.toFixed(1) + "%";
-
-
-                document.getElementById(
-                    "vacantPercentage"
-                ).textContent =
-                    vacantPercentage.toFixed(1) + "%";
-
-
-                document.getElementById(
-                    "occupiedBar"
-                ).style.width =
-                    occupiedPercentage + "%";
-
-
-                document.getElementById(
-                    "vacantBar"
-                ).style.width =
-                    vacantPercentage + "%";
-
-            }
-
-            else {
-
-                document.getElementById(
-                    "occupiedPercentage"
-                ).textContent = "0%";
-
-
-                document.getElementById(
-                    "vacantPercentage"
-                ).textContent = "0%";
-
-
-                document.getElementById(
-                    "occupiedBar"
-                ).style.width = "0%";
-
-
-                document.getElementById(
-                    "vacantBar"
-                ).style.width = "0%";
-
-            }
-
-        }
-
-
-        /* ==============================
-           UPDATE DASHBOARD
-        ============================== */
-
         function updateDashboard() {
+
 
             fetch("/data")
 
@@ -1270,13 +1040,15 @@
 
 
                     if (data.error) {
+
                         return;
+
                     }
 
 
-                    /* ----------------------
-                       MAIN STATISTICS
-                    ---------------------- */
+                    // =====================
+                    // BASIC STATISTICS
+                    // =====================
 
                     document.getElementById(
                         "totalSlots"
@@ -1296,22 +1068,53 @@
                         data.vacant;
 
 
-                    let rate =
-                        Number(
-                            data.occupancy_rate || 0
-                        );
-
-
                     document.getElementById(
                         "occupancyRate"
                     ).textContent =
-                        rate.toFixed(1) + "%";
+                        Number(
+                            data.occupancy_rate
+                        ).toFixed(1)
+                        + "%";
+
+
+                    document.getElementById(
+                        "occupiedSummary"
+                    ).textContent =
+                        data.occupied;
+
+
+                    document.getElementById(
+                        "vacantSummary"
+                    ).textContent =
+                        data.vacant;
+
+
+                    // =====================
+                    // AVAILABILITY
+                    // =====================
+
+                    document.getElementById(
+                        "availability"
+                    ).textContent =
+                        data.availability_status;
+
+
+                    // =====================
+                    // PROGRESS
+                    // =====================
+
+                    let rate =
+                        Number(
+                            data.occupancy_rate
+                            || 0
+                        );
 
 
                     document.getElementById(
                         "progressText"
                     ).textContent =
-                        rate.toFixed(1) + "%";
+                        rate.toFixed(1)
+                        + "%";
 
 
                     document.getElementById(
@@ -1320,56 +1123,124 @@
                         rate + "%";
 
 
-                    /* ----------------------
-                       SLOT SUMMARY
-                    ---------------------- */
+                    // =====================
+                    // PREDICTION
+                    // =====================
 
-                    updateSlotSummary(
-                        Number(data.total_slots || 0),
-                        Number(data.occupied || 0),
-                        Number(data.vacant || 0)
-                    );
+                    if (
+                        data.predicted_occupancy
+                        !== null &&
+                        data.predicted_occupancy
+                        !== undefined
+                    ) {
+
+                        document.getElementById(
+                            "predictedOccupancy"
+                        ).textContent =
+                            Number(
+                                data.predicted_occupancy
+                            ).toFixed(1)
+                            + "%";
+
+                    }
+                    else {
+
+                        document.getElementById(
+                            "predictedOccupancy"
+                        ).textContent =
+                            "--";
+
+                    }
 
 
-                    /* ----------------------
-                       AVAILABILITY
-                    ---------------------- */
+                    document.getElementById(
+                        "predictionMessage"
+                    ).textContent =
+                        data.prediction_message
+                        || "No prediction available.";
 
-                    updateAvailability(rate);
+
+                    // =====================
+                    // RECOMMENDATIONS
+                    // =====================
+
+                    let recommendationBox =
+                        document.getElementById(
+                            "recommendedSlots"
+                        );
 
 
-                    /* ----------------------
-                       LAST ANALYSIS
-                    ---------------------- */
+                    recommendationBox.innerHTML =
+                        "";
+
+
+                    if (
+                        data.recommended_slots
+                        &&
+                        data.recommended_slots.length
+                        > 0
+                    ) {
+
+                        data.recommended_slots
+                            .forEach(
+                                slot => {
+
+                                    let element =
+                                        document
+                                        .createElement(
+                                            "span"
+                                        );
+
+                                    element.className =
+                                        "slot";
+
+                                    element.textContent =
+                                        "Slot "
+                                        + slot;
+
+                                    recommendationBox
+                                        .appendChild(
+                                            element
+                                        );
+
+                                }
+                            );
+
+                    }
+                    else {
+
+                        recommendationBox
+                            .textContent =
+                            "No vacant slots available.";
+
+                    }
+
+
+                    // =====================
+                    // CONFIDENCE
+                    // =====================
+
+                    document.getElementById(
+                        "lowConfidence"
+                    ).textContent =
+                        data.low_confidence_count
+                        || 0;
+
+
+                    // =====================
+                    // TIME
+                    // =====================
 
                     document.getElementById(
                         "analysisTime"
                     ).textContent =
-                        data.analysis_time ||
-                        "Not available";
+                        data.analysis_time
+                        || "No analysis yet";
 
 
-                    document.getElementById(
-                        "analysisSlots"
-                    ).textContent =
-                        data.total_slots;
-
-
-                    document.getElementById(
-                        "analysisOccupied"
-                    ).textContent =
-                        data.occupied;
-
-
-                    document.getElementById(
-                        "analysisVacant"
-                    ).textContent =
-                        data.vacant;
-
-
-                    /* ----------------------
-                       RESULT IMAGE
-                    ---------------------- */
+                    // =====================
+                    // RESULT IMAGE
+                    // =====================
 
                     document.getElementById(
                         "resultImage"
@@ -1391,16 +1262,7 @@
         }
 
 
-        /* ==============================
-           INITIAL UPDATE
-        ============================== */
-
-        updateDashboard();
-
-
-        /* ==============================
-           AUTO REFRESH
-        ============================== */
+        // Update every 5 seconds
 
         setInterval(
             updateDashboard,

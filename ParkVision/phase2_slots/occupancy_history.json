@@ -1,0 +1,16 @@
+[
+    {
+        "analysis_time": "08-10-2026 10:14:30 AM",
+        "total_slots": 110,
+        "occupied": 58,
+        "vacant": 52,
+        "occupancy_rate": 52.73
+    },
+    {
+        "analysis_time": "08-10-2026 10:16:47 AM",
+        "total_slots": 116,
+        "occupied": 114,
+        "vacant": 2,
+        "occupancy_rate": 98.28
+    }
+]

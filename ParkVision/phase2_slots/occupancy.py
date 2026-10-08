@@ -6,9 +6,8 @@ from datetime import datetime
 from ultralytics import YOLO
 from huggingface_hub import hf_hub_download
 
-
 # ==========================================
-# FILES
+# FILE PATHS
 # ==========================================
 
 IMAGE_PATH = "dataset/images/parking.jpg"
@@ -17,29 +16,30 @@ OUTPUT_PATH = "phase2_slots/occupancy_result.jpg"
 
 DATA_PATH = "phase2_slots/occupancy_data.json"
 
-STATIC_OUTPUT_PATH = (
-    "phase2_slots/static/occupancy_result.jpg"
-)
+HISTORY_PATH = "phase2_slots/occupancy_history.json"
+
+STATIC_OUTPUT_PATH = "phase2_slots/static/occupancy_result.jpg"
 
 
 # ==========================================
 # SETTINGS
 # ==========================================
 
-# Higher confidence removes weak detections
 CONFIDENCE = 0.40
 
-# Lower IoU means overlapping duplicate boxes
-# are more likely to be removed
 NMS_IOU = 0.40
+
+LOW_CONFIDENCE_THRESHOLD = 0.55
+
+MAX_HISTORY = 100
 
 
 # ==========================================
-# START
+# HEADER
 # ==========================================
 
 print("--------------------------------")
-print("ParkVision Parking Occupancy")
+print("ParkVision Smart Parking System")
 print("--------------------------------")
 
 print("Image:", IMAGE_PATH)
@@ -54,20 +54,17 @@ image = cv2.imread(IMAGE_PATH)
 if image is None:
 
     print("ERROR: parking.jpg not found!")
+
     exit()
+
 
 height, width = image.shape[:2]
 
-print(
-    "Image size:",
-    width,
-    "x",
-    height
-)
+print("Image size:", width, "x", height)
 
 
 # ==========================================
-# LOAD PKLOT MODEL
+# LOAD MODEL
 # ==========================================
 
 print("--------------------------------")
@@ -80,77 +77,42 @@ model_path = hf_hub_download(
 )
 
 model = YOLO(model_path)
-
-
+print("Model loaded.")
 # ==========================================
 # DETECTION
 # ==========================================
-
 print("--------------------------------")
 print("Detecting parking spaces...")
 print("--------------------------------")
-
-results = model.predict(
-
-    source=image,
-
-    imgsz=960,
-
-    conf=CONFIDENCE,
-
-    iou=NMS_IOU,
-
-    verbose=False
-
-)
-
+results = model.predict(source=image,imgsz=960,conf=CONFIDENCE,iou=NMS_IOU,verbose=False)
 result = results[0]
-
-
 # ==========================================
-# AUTOMATIC SLOTS
+# PROCESS DETECTIONS
 # ==========================================
-
 slots = []
-
-
 if result.boxes is not None:
-
     for box in result.boxes:
-
         coords = box.xyxy[0].tolist()
-
-        x1, y1, x2, y2 = map(
-            int,
-            coords
-        )
-
-        confidence = float(
-            box.conf[0]
-        )
-
-        class_id = int(
-            box.cls[0]
-        )
-
-
-        # PKLot classes
-
+        x1, y1, x2, y2 = map(int, coords)
+        confidence = float(box.conf[0])
+        class_id = int(box.cls[0])
+        # ----------------------------------
+        # CLASSIFICATION
+        # ----------------------------------
         if class_id == 0:
-
             status = "VACANT"
-
         elif class_id == 1:
-
             status = "OCCUPIED"
-
         else:
-
             continue
-
-
+        # ----------------------------------
+        # CONFIDENCE ANALYSIS
+        # ----------------------------------
+        if confidence < LOW_CONFIDENCE_THRESHOLD:
+            confidence_status = "LOW"
+        else:
+            confidence_status = "HIGH"
         slots.append({
-
             "box": [
                 x1,
                 y1,
@@ -158,12 +120,22 @@ if result.boxes is not None:
                 y2
             ],
 
-            "confidence": confidence,
+            "confidence": round(
+                confidence,
+                3
+            ),
 
-            "status": status
+            "status": status,
+
+            "confidence_status":
+                confidence_status
 
         })
 
+
+# ==========================================
+# COUNTS
+# ==========================================
 
 print(
     "Parking spaces detected:",
@@ -171,15 +143,14 @@ print(
 )
 
 
-# ==========================================
-# CREATE OUTPUT
-# ==========================================
-
 output = image.copy()
+
 
 occupied_count = 0
 
 vacant_count = 0
+
+low_confidence_count = 0
 
 
 # ==========================================
@@ -197,10 +168,13 @@ for number, slot in enumerate(
 
     confidence = slot["confidence"]
 
+    confidence_status = \
+        slot["confidence_status"]
 
-    # ======================================
+
+    # ----------------------------------
     # COUNT
-    # ======================================
+    # ----------------------------------
 
     if status == "OCCUPIED":
 
@@ -223,55 +197,77 @@ for number, slot in enumerate(
         )
 
 
-    # ======================================
-    # DRAW BOX
-    # ======================================
+    # ----------------------------------
+    # LOW CONFIDENCE
+    # ----------------------------------
 
-    cv2.rectangle(
+    if confidence_status == "LOW":
 
+        low_confidence_count += 1
+
+        # Orange warning border
+
+        border_color = (
+            0,
+            165,
+            255
+        )
+
+        cv2.rectangle(
+            output,
+            (x1, y1),
+            (x2, y2),
+            border_color,
+            3
+        )
+
+    else:
+
+        cv2.rectangle(
+            output,
+            (x1, y1),
+            (x2, y2),
+            color,
+            2
+        )
+
+
+    # ----------------------------------
+    # SLOT NUMBER
+    # ----------------------------------
+
+    cv2.putText(
         output,
-
-        (x1, y1),
-
-        (x2, y2),
-
+        str(number),
+        (x1 + 2, y1 + 15),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.45,
         color,
-
-        2
-
+        1
     )
 
 
-    # ======================================
-    # SMALL LABEL
-    # ======================================
+    # ----------------------------------
+    # CONFIDENCE
+    # ----------------------------------
 
-    label = str(number)
+    confidence_text = (
+        f"{confidence * 100:.0f}%"
+    )
 
     cv2.putText(
-
         output,
-
-        label,
-
-        (
-            x1 + 2,
-            y1 + 15
-        ),
-
+        confidence_text,
+        (x1, y2 - 5),
         cv2.FONT_HERSHEY_SIMPLEX,
-
-        0.45,
-
+        0.35,
         color,
-
         1
-
     )
 
 
 # ==========================================
-# FINAL COUNTS
+# OCCUPANCY CALCULATION
 # ==========================================
 
 total = len(slots)
@@ -280,7 +276,8 @@ total = len(slots)
 if total > 0:
 
     occupancy_rate = (
-        occupied_count / total
+        occupied_count /
+        total
     ) * 100
 
 else:
@@ -288,7 +285,239 @@ else:
     occupancy_rate = 0
 
 
+# ==========================================
+# SMART RECOMMENDATION
+# ==========================================
+
+vacant_slots = []
+
+for number, slot in enumerate(
+    slots,
+    start=1
+):
+
+    if slot["status"] == "VACANT":
+
+        vacant_slots.append({
+
+            "slot": number,
+
+            "confidence":
+                slot["confidence"]
+
+        })
+
+
+# Highest-confidence vacant slots first
+
+vacant_slots.sort(
+    key=lambda x:
+        x["confidence"],
+    reverse=True
+)
+
+
+recommended_slots = [
+    item["slot"]
+    for item in vacant_slots[:5]
+]
+
+
+# ==========================================
+# LOAD HISTORY
+# ==========================================
+
+history = []
+
+
+if os.path.exists(HISTORY_PATH):
+
+    try:
+
+        with open(
+            HISTORY_PATH,
+            "r"
+        ) as f:
+
+            history = json.load(f)
+
+    except Exception:
+
+        history = []
+
+
+# ==========================================
+# ADD CURRENT RESULT TO HISTORY
+# ==========================================
+
+analysis_time = datetime.now().strftime(
+    "%d-%m-%Y %I:%M:%S %p"
+)
+
+
+history.append({
+
+    "analysis_time":
+        analysis_time,
+
+    "total_slots":
+        total,
+
+    "occupied":
+        occupied_count,
+
+    "vacant":
+        vacant_count,
+
+    "occupancy_rate":
+        round(
+            occupancy_rate,
+            2
+        )
+
+})
+
+
+# Keep latest 100 analyses
+
+history = history[-MAX_HISTORY:]
+
+
+# ==========================================
+# SAVE HISTORY
+# ==========================================
+
+os.makedirs(
+    "phase2_slots",
+    exist_ok=True
+)
+
+
+with open(
+    HISTORY_PATH,
+    "w"
+) as f:
+
+    json.dump(
+        history,
+        f,
+        indent=4
+    )
+
+
+# ==========================================
+# DEMAND PREDICTION
+# ==========================================
+
+predicted_occupancy = None
+
+prediction_message = (
+    "Not enough history for prediction."
+)
+
+
+if len(history) >= 3:
+
+    recent_rates = [
+
+        item["occupancy_rate"]
+
+        for item in history
+
+    ]
+
+
+    # Simple trend calculation
+
+    differences = []
+
+    for i in range(
+        1,
+        len(recent_rates)
+    ):
+
+        differences.append(
+            recent_rates[i]
+            -
+            recent_rates[i - 1]
+        )
+
+
+    average_change = (
+        sum(differences)
+        /
+        len(differences)
+    )
+
+
+    predicted_occupancy = (
+        occupancy_rate
+        +
+        average_change
+    )
+
+
+    # Keep prediction within 0-100
+
+    predicted_occupancy = max(
+        0,
+        min(
+            100,
+            predicted_occupancy
+        )
+    )
+
+
+    if predicted_occupancy > \
+            occupancy_rate + 2:
+
+        prediction_message = (
+            "Parking demand is expected "
+            "to increase."
+        )
+
+    elif predicted_occupancy < \
+            occupancy_rate - 2:
+
+        prediction_message = (
+            "Parking demand is expected "
+            "to decrease."
+        )
+
+    else:
+
+        prediction_message = (
+            "Parking demand is expected "
+            "to remain stable."
+        )
+
+
+# ==========================================
+# PARKING AVAILABILITY STATUS
+# ==========================================
+
+if occupancy_rate < 50:
+
+    availability_status = \
+        "PLENTY OF PARKING"
+
+elif occupancy_rate <= 80:
+
+    availability_status = \
+        "LIMITED PARKING"
+
+else:
+
+    availability_status = \
+        "NEARLY FULL"
+
+
+# ==========================================
+# PRINT FINAL RESULT
+# ==========================================
+
 print()
+
 print("================================")
 print("FINAL RESULT")
 print("================================")
@@ -310,189 +539,207 @@ print(
 
 print(
     "Occupancy   :",
-    round(occupancy_rate, 2),
+    round(
+        occupancy_rate,
+        2
+    ),
     "%"
+)
+
+print(
+    "Low confidence detections:",
+    low_confidence_count
+)
+
+print(
+    "Recommended slots:",
+    recommended_slots
+)
+
+if predicted_occupancy is not None:
+
+    print(
+        "Predicted occupancy:",
+        round(
+            predicted_occupancy,
+            2
+        ),
+        "%"
+    )
+
+print(
+    "Status:",
+    availability_status
 )
 
 print("================================")
 
 
 # ==========================================
-# SUMMARY
+# DRAW SUMMARY
 # ==========================================
 
 cv2.putText(
-
     output,
-
     f"Occupied: {occupied_count}",
-
     (20, 35),
-
     cv2.FONT_HERSHEY_SIMPLEX,
-
     0.8,
-
     (0, 0, 255),
-
     2
-
 )
 
-
 cv2.putText(
-
     output,
-
     f"Vacant: {vacant_count}",
-
     (20, 65),
-
     cv2.FONT_HERSHEY_SIMPLEX,
-
     0.8,
-
     (0, 255, 0),
-
     2
-
 )
 
-
 cv2.putText(
-
     output,
-
     f"Total Slots: {total}",
-
     (20, 95),
-
     cv2.FONT_HERSHEY_SIMPLEX,
-
     0.8,
-
     (255, 255, 255),
-
     2
-
 )
-
 
 cv2.putText(
-
     output,
-
     f"Occupancy: {occupancy_rate:.1f}%",
-
     (20, 125),
-
     cv2.FONT_HERSHEY_SIMPLEX,
-
     0.8,
-
     (255, 255, 255),
-
     2
+)
 
+cv2.putText(
+    output,
+    f"Low Confidence: {low_confidence_count}",
+    (20, 155),
+    cv2.FONT_HERSHEY_SIMPLEX,
+    0.65,
+    (0, 165, 255),
+    2
 )
 
 
 # ==========================================
-# CREATE DIRECTORIES
+# SAVE OUTPUT IMAGE
 # ==========================================
-
-os.makedirs(
-    "phase2_slots",
-    exist_ok=True
-)
 
 os.makedirs(
     "phase2_slots/static",
     exist_ok=True
 )
 
-
-# ==========================================
-# SAVE RESULT IMAGE
-# ==========================================
-
 cv2.imwrite(
-
     OUTPUT_PATH,
-
     output
-
 )
 
 cv2.imwrite(
-
     STATIC_OUTPUT_PATH,
-
     output
-
 )
 
 
 # ==========================================
-# SAVE JSON
+# SAVE CURRENT DATA
 # ==========================================
 
 occupancy_data = {
-    
-    "analysis_time": datetime.now().strftime(
-        "%d-%m-%Y %I:%M:%S %p"
-    ),
 
-    "total_slots": total,
+    "analysis_time":
+        analysis_time,
 
-    "occupied": occupied_count,
+    "total_slots":
+        total,
 
-    "vacant": vacant_count,
+    "occupied":
+        occupied_count,
 
-    "occupancy_rate": round(
-        occupancy_rate,
-        2
-    ),
+    "vacant":
+        vacant_count,
 
-    "slot_status": [
+    "occupancy_rate":
+        round(
+            occupancy_rate,
+            2
+        ),
 
-        slot["status"]
+    "availability_status":
+        availability_status,
 
-        for slot in slots
+    "low_confidence_count":
+        low_confidence_count,
 
-    ],
+    "recommended_slots":
+        recommended_slots,
 
-    "slots": slots
+    "predicted_occupancy":
+        (
+            round(
+                predicted_occupancy,
+                2
+            )
+            if predicted_occupancy is not None
+            else None
+        ),
+
+    "prediction_message":
+        prediction_message,
+
+    "slot_status":
+        [
+            slot["status"]
+            for slot in slots
+        ],
+
+    "slots":
+        slots
 
 }
 
 
 with open(
-
     DATA_PATH,
-
     "w"
-
 ) as f:
 
     json.dump(
-
         occupancy_data,
-
         f,
-
         indent=4
-
     )
 
 
-print("Occupancy data saved.")
+# ==========================================
+# FINISH
+# ==========================================
+
+print()
+
+print(
+    "Occupancy data saved."
+)
+
+print(
+    "History saved:",
+    HISTORY_PATH
+)
 
 print(
     "Output:",
     OUTPUT_PATH
 )
 
-print("================================")
+print("--------------------------------")
 print("Detection completed.")
-print("================================")
+print("--------------------------------")

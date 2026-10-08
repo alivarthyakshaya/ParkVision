@@ -1,303 +1,784 @@
 {
-    "analysis_time": "04-10-2026 06:06:46 PM",
-    "total_slots": 142,
-    "occupied": 20,
-    "vacant": 122,
-    "occupancy_rate": 14.08,
+    "analysis_time": "08-10-2026 10:16:47 AM",
+    "total_slots": 116,
+    "occupied": 114,
+    "vacant": 2,
+    "occupancy_rate": 98.28,
+    "availability_status": "NEARLY FULL",
+    "low_confidence_count": 19,
+    "recommended_slots": [
+        47,
+        61
+    ],
+    "predicted_occupancy": null,
+    "prediction_message": "Not enough history for prediction.",
     "slot_status": [
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "OCCUPIED",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "OCCUPIED",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "OCCUPIED",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "OCCUPIED",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "OCCUPIED",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "OCCUPIED",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "OCCUPIED",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "OCCUPIED",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "OCCUPIED",
-        "VACANT",
-        "VACANT",
         "OCCUPIED",
         "OCCUPIED",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "OCCUPIED",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "OCCUPIED",
-        "VACANT",
-        "VACANT",
         "OCCUPIED",
         "OCCUPIED",
-        "VACANT",
-        "VACANT",
         "OCCUPIED",
-        "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT",
         "OCCUPIED",
-        "VACANT",
-        "VACANT",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
         "OCCUPIED",
         "VACANT",
         "OCCUPIED",
         "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
         "VACANT",
-        "VACANT",
-        "VACANT",
-        "VACANT"
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED",
+        "OCCUPIED"
     ],
     "slots": [
         {
             "box": [
-                231,
-                451,
-                264,
-                489
+                404,
+                163,
+                421,
+                196
             ],
-            "confidence": 0.9223569631576538,
-            "status": "VACANT"
+            "confidence": 0.915,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                312,
-                452,
-                342,
-                493
+                437,
+                130,
+                457,
+                161
             ],
-            "confidence": 0.9213234186172485,
-            "status": "VACANT"
+            "confidence": 0.908,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                483,
-                234,
-                507,
+                419,
+                77,
+                435,
+                103
+            ],
+            "confidence": 0.906,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                421,
+                131,
+                439,
+                161
+            ],
+            "confidence": 0.906,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                403,
+                77,
+                418,
+                104
+            ],
+            "confidence": 0.905,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                344,
+                237,
+                363,
                 274
             ],
-            "confidence": 0.9189367890357971,
-            "status": "VACANT"
+            "confidence": 0.899,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                259,
-                450,
-                291,
-                488
-            ],
-            "confidence": 0.9178297519683838,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                472,
-                131,
-                492,
+                454,
+                130,
+                475,
                 160
             ],
-            "confidence": 0.9178230166435242,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                504,
-                235,
-                527,
-                272
-            ],
-            "confidence": 0.9172878265380859,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                318,
-                138,
-                336,
-                164
-            ],
-            "confidence": 0.9165663719177246,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                383,
-                283,
-                402,
-                321
-            ],
-            "confidence": 0.9160386919975281,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                323,
-                239,
-                344,
-                274
-            ],
-            "confidence": 0.9155221581459045,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                344,
-                239,
-                363,
-                275
-            ],
-            "confidence": 0.9151324033737183,
-            "status": "VACANT"
+            "confidence": 0.897,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
                 386,
-                165,
+                164,
                 402,
-                199
+                197
             ],
-            "confidence": 0.9146721959114075,
-            "status": "VACANT"
+            "confidence": 0.896,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                287,
-                240,
-                309,
+                404,
+                129,
+                421,
+                160
+            ],
+            "confidence": 0.895,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                363,
+                237,
+                383,
+                273
+            ],
+            "confidence": 0.895,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                422,
+                163,
+                440,
+                197
+            ],
+            "confidence": 0.893,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                388,
+                78,
+                402,
+                105
+            ],
+            "confidence": 0.891,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                424,
+                237,
+                445,
                 274
             ],
-            "confidence": 0.9138027429580688,
-            "status": "VACANT"
+            "confidence": 0.891,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                288,
-                451,
-                314,
-                491
+                473,
+                131,
+                492,
+                159
             ],
-            "confidence": 0.9128981232643127,
-            "status": "VACANT"
+            "confidence": 0.885,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                267,
-                240,
-                291,
+                368,
+                166,
+                385,
+                198
+            ],
+            "confidence": 0.88,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                362,
+                279,
+                383,
+                318
+            ],
+            "confidence": 0.88,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                383,
+                280,
+                403,
+                319
+            ],
+            "confidence": 0.88,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                475,
+                162,
+                495,
+                194
+            ],
+            "confidence": 0.879,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                434,
+                77,
+                450,
+                102
+            ],
+            "confidence": 0.878,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                444,
+                239,
+                466,
+                273
+            ],
+            "confidence": 0.878,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                497,
+                71,
+                519,
+                99
+            ],
+            "confidence": 0.877,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                466,
+                75,
+                483,
+                100
+            ],
+            "confidence": 0.872,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                481,
+                74,
+                499,
+                99
+            ],
+            "confidence": 0.871,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                450,
+                76,
+                467,
+                101
+            ],
+            "confidence": 0.871,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                324,
+                239,
+                344,
                 274
             ],
-            "confidence": 0.9120119214057922,
-            "status": "VACANT"
+            "confidence": 0.869,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                284,
-                139,
-                305,
-                165
+                405,
+                237,
+                424,
+                273
             ],
-            "confidence": 0.9113234877586365,
-            "status": "VACANT"
+            "confidence": 0.869,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                425,
+                279,
+                446,
+                321
+            ],
+            "confidence": 0.868,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                372,
+                79,
+                388,
+                106
+            ],
+            "confidence": 0.867,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                342,
+                278,
+                362,
+                319
+            ],
+            "confidence": 0.865,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                383,
+                134,
+                403,
+                161
+            ],
+            "confidence": 0.862,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                350,
+                168,
+                368,
+                200
+            ],
+            "confidence": 0.853,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                304,
+                239,
+                326,
+                274
+            ],
+            "confidence": 0.853,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                382,
+                236,
+                407,
+                273
+            ],
+            "confidence": 0.851,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                484,
+                240,
+                507,
+                274
+            ],
+            "confidence": 0.849,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                457,
+                163,
+                476,
+                195
+            ],
+            "confidence": 0.848,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                403,
+                278,
+                425,
+                320
+            ],
+            "confidence": 0.847,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                333,
+                168,
+                350,
+                200
+            ],
+            "confidence": 0.847,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                83,
+                371,
+                130,
+                419
+            ],
+            "confidence": 0.842,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                449,
+                49,
+                465,
+                74
+            ],
+            "confidence": 0.834,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                446,
+                278,
+                468,
+                320
+            ],
+            "confidence": 0.83,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                487,
+                278,
+                512,
+                319
+            ],
+            "confidence": 0.827,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                212,
+                238,
+                252,
+                276
+            ],
+            "confidence": 0.827,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                526,
+                239,
+                554,
+                271
+            ],
+            "confidence": 0.826,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                491,
+                129,
+                511,
+                159
+            ],
+            "confidence": 0.826,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                467,
+                280,
+                489,
+                320
+            ],
+            "confidence": 0.824,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                434,
+                51,
+                449,
+                75
+            ],
+            "confidence": 0.823,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                231,
+                452,
+                263,
+                493
+            ],
+            "confidence": 0.821,
+            "status": "VACANT",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                279,
+                239,
+                307,
+                274
+            ],
+            "confidence": 0.818,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                501,
+                393,
+                528,
+                431
+            ],
+            "confidence": 0.815,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                435,
+                163,
+                457,
+                196
+            ],
+            "confidence": 0.813,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                493,
+                162,
+                514,
+                193
+            ],
+            "confidence": 0.812,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                302,
+                280,
+                325,
+                320
+            ],
+            "confidence": 0.799,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                356,
+                79,
+                371,
+                105
+            ],
+            "confidence": 0.799,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                322,
+                279,
+                342,
+                320
+            ],
+            "confidence": 0.799,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                463,
+                247,
+                487,
+                274
+            ],
+            "confidence": 0.795,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                279,
+                168,
+                302,
+                202
+            ],
+            "confidence": 0.782,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                247,
+                168,
+                278,
+                204
+            ],
+            "confidence": 0.779,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                300,
+                168,
+                318,
+                201
+            ],
+            "confidence": 0.772,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                418,
+                51,
+                434,
+                76
+            ],
+            "confidence": 0.769,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
@@ -306,1268 +787,625 @@
                 481,
                 73
             ],
-            "confidence": 0.9109543561935425,
-            "status": "VACANT"
+            "confidence": 0.763,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                333,
-                137,
-                352,
-                164
+                205,
+                451,
+                237,
+                488
             ],
-            "confidence": 0.9047605991363525,
-            "status": "VACANT"
+            "confidence": 0.75,
+            "status": "VACANT",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                350,
-                136,
-                368,
-                163
+                505,
+                241,
+                528,
+                269
             ],
-            "confidence": 0.9045755863189697,
-            "status": "VACANT"
+            "confidence": 0.736,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                305,
-                239,
-                327,
-                274
+                477,
+                397,
+                503,
+                429
             ],
-            "confidence": 0.9035711288452148,
-            "status": "VACANT"
+            "confidence": 0.734,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                293,
-                83,
-                312,
-                112
+                259,
+                452,
+                290,
+                491
             ],
-            "confidence": 0.9018775820732117,
-            "status": "VACANT"
+            "confidence": 0.732,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                525,
-                235,
-                549,
-                272
-            ],
-            "confidence": 0.901497483253479,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                362,
-                282,
-                383,
-                320
-            ],
-            "confidence": 0.9014789462089539,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                419,
-                77,
-                434,
-                105
-            ],
-            "confidence": 0.9008808732032776,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                300,
-                138,
-                321,
-                165
-            ],
-            "confidence": 0.9008018970489502,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                371,
-                79,
-                388,
-                107
-            ],
-            "confidence": 0.899470329284668,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                402,
-                77,
-                418,
-                105
-            ],
-            "confidence": 0.8992100954055786,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                424,
                 236,
-                444,
+                377,
+                271,
+                422
+            ],
+            "confidence": 0.73,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                205,
+                275,
+                250,
+                324
+            ],
+            "confidence": 0.729,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                101,
+                239,
+                137,
+                275
+            ],
+            "confidence": 0.728,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                267,
+                240,
+                295,
                 274
             ],
-            "confidence": 0.8989192247390747,
-            "status": "VACANT"
+            "confidence": 0.727,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                405,
-                234,
-                424,
-                273
+                334,
+                385,
+                358,
+                422
             ],
-            "confidence": 0.8987137079238892,
-            "status": "VACANT"
+            "confidence": 0.717,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                309,
-                83,
-                327,
-                110
+                282,
+                138,
+                302,
+                166
             ],
-            "confidence": 0.898492693901062,
-            "status": "VACANT"
+            "confidence": 0.711,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                368,
-                136,
-                386,
-                162
-            ],
-            "confidence": 0.8974344730377197,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                387,
-                78,
-                402,
-                106
-            ],
-            "confidence": 0.8969806432723999,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                403,
-                164,
-                421,
-                198
-            ],
-            "confidence": 0.8952397108078003,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                367,
-                166,
-                386,
-                199
-            ],
-            "confidence": 0.8950764536857605,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                364,
-                239,
-                383,
-                273
-            ],
-            "confidence": 0.8944171667098999,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                479,
-                48,
-                496,
-                72
-            ],
-            "confidence": 0.8941353559494019,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                312,
-                60,
-                331,
-                81
-            ],
-            "confidence": 0.8913354277610779,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                448,
-                49,
-                465,
-                74
-            ],
-            "confidence": 0.8910984992980957,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                324,
-                83,
-                342,
-                110
-            ],
-            "confidence": 0.8910765647888184,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                454,
-                132,
-                474,
-                161
-            ],
-            "confidence": 0.889798104763031,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                473,
-                7,
-                488,
-                28
-            ],
-            "confidence": 0.8897757530212402,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                442,
-                235,
-                466,
-                273
-            ],
-            "confidence": 0.8882757425308228,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                297,
-                60,
-                315,
-                82
-            ],
-            "confidence": 0.8870527148246765,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                421,
-                164,
-                439,
-                198
-            ],
-            "confidence": 0.8824304342269897,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                459,
-                8,
-                473,
-                29
-            ],
-            "confidence": 0.8821084499359131,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                340,
-                82,
-                356,
-                108
-            ],
-            "confidence": 0.8818299174308777,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                425,
-                277,
-                445,
-                320
-            ],
-            "confidence": 0.8808295726776123,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                466,
-                279,
-                489,
-                320
-            ],
-            "confidence": 0.8805188536643982,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                350,
-                175,
-                367,
+                318,
+                168,
+                332,
                 200
             ],
-            "confidence": 0.8772512674331665,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                490,
-                130,
-                510,
-                159
-            ],
-            "confidence": 0.8771246671676636,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                434,
-                77,
-                450,
-                103
-            ],
-            "confidence": 0.8770229816436768,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                344,
-                282,
-                361,
-                320
-            ],
-            "confidence": 0.8761917352676392,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                244,
-                386,
-                272,
-                423
-            ],
-            "confidence": 0.8756067752838135,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                381,
-                236,
-                405,
-                272
-            ],
-            "confidence": 0.8752089142799377,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                279,
-                84,
-                297,
-                112
-            ],
-            "confidence": 0.875095546245575,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                443,
-                284,
-                468,
-                317
-            ],
-            "confidence": 0.8750601410865784,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                268,
-                139,
-                288,
-                165
-            ],
-            "confidence": 0.8730161786079407,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                445,
-                8,
-                459,
-                29
-            ],
-            "confidence": 0.870459258556366,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                263,
-                16,
-                282,
-                41
-            ],
-            "confidence": 0.8696111440658569,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                502,
-                6,
-                518,
-                28
-            ],
-            "confidence": 0.8694626688957214,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                204,
-                450,
-                238,
-                486
-            ],
-            "confidence": 0.8658319115638733,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                507,
-                130,
-                530,
-                159
-            ],
-            "confidence": 0.8649588823318481,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                463,
-                234,
-                485,
-                273
-            ],
-            "confidence": 0.8642495274543762,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                488,
-                6,
-                502,
-                28
-            ],
-            "confidence": 0.8632609844207764,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                248,
-                140,
-                270,
-                167
-            ],
-            "confidence": 0.8627528548240662,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                486,
-                279,
-                511,
-                318
-            ],
-            "confidence": 0.862548828125,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                170,
-                166,
-                195,
-                205
-            ],
-            "confidence": 0.860337495803833,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                439,
-                164,
-                457,
-                197
-            ],
-            "confidence": 0.8592952489852905,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                450,
-                76,
-                466,
-                102
-            ],
-            "confidence": 0.8591367602348328,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                356,
-                80,
-                371,
-                106
-            ],
-            "confidence": 0.8589455485343933,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                466,
-                75,
-                482,
-                101
-            ],
-            "confidence": 0.8588168621063232,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                434,
-                49,
-                449,
-                74
-            ],
-            "confidence": 0.8584418296813965,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                404,
-                281,
-                424,
-                320
-            ],
-            "confidence": 0.8574840426445007,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                294,
-                16,
-                308,
-                41
-            ],
-            "confidence": 0.8567256927490234,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                280,
-                17,
-                295,
-                40
-            ],
-            "confidence": 0.8562397360801697,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                416,
-                10,
-                430,
-                31
-            ],
-            "confidence": 0.8545398712158203,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                245,
-                84,
-                267,
-                113
-            ],
-            "confidence": 0.8529453277587891,
-            "status": "VACANT"
+            "confidence": 0.708,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
                 451,
                 393,
-                479,
-                428
+                480,
+                427
             ],
-            "confidence": 0.852470338344574,
-            "status": "VACANT"
+            "confidence": 0.688,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                327,
-                58,
-                345,
-                80
+                507,
+                278,
+                535,
+                320
             ],
-            "confidence": 0.8505916595458984,
-            "status": "OCCUPIED"
+            "confidence": 0.675,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                212,
-                141,
-                236,
-                169
+                301,
+                139,
+                322,
+                166
             ],
-            "confidence": 0.8499668836593628,
-            "status": "VACANT"
+            "confidence": 0.674,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                211,
-                241,
-                236,
-                275
+                332,
+                136,
+                352,
+                164
             ],
-            "confidence": 0.8492154479026794,
-            "status": "VACANT"
+            "confidence": 0.661,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                137,
-                165,
-                170,
-                205
+                342,
+                80,
+                355,
+                106
             ],
-            "confidence": 0.8481185436248779,
-            "status": "VACANT"
+            "confidence": 0.657,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                430,
-                9,
-                445,
-                30
-            ],
-            "confidence": 0.8473669290542603,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                228,
-                241,
-                253,
-                275
-            ],
-            "confidence": 0.8454113602638245,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                333,
+                204,
                 167,
-                350,
-                201
+                229,
+                203
             ],
-            "confidence": 0.8437976241111755,
-            "status": "VACANT"
+            "confidence": 0.652,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                457,
-                165,
-                476,
-                197
+                182,
+                241,
+                214,
+                277
             ],
-            "confidence": 0.8412984609603882,
-            "status": "VACANT"
+            "confidence": 0.649,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                222,
-                374,
-                254,
-                423
-            ],
-            "confidence": 0.8395156264305115,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                315,
+                225,
                 168,
-                334,
-                201
+                250,
+                203
             ],
-            "confidence": 0.8339385390281677,
-            "status": "VACANT"
+            "confidence": 0.643,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                263,
-                83,
-                285,
-                113
+                89,
+                239,
+                120,
+                276
             ],
-            "confidence": 0.8307027816772461,
-            "status": "VACANT"
+            "confidence": 0.632,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                525,
+                391,
+                553,
+                430
+            ],
+            "confidence": 0.631,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                296,
+                83,
+                310,
+                109
+            ],
+            "confidence": 0.624,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                311,
+                383,
+                336,
+                424
+            ],
+            "confidence": 0.608,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                311,
+                83,
+                326,
+                108
+            ],
+            "confidence": 0.607,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                150,
+                240,
+                189,
+                276
+            ],
+            "confidence": 0.602,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                367,
+                135,
+                385,
+                162
+            ],
+            "confidence": 0.598,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                280,
+                285,
+                305,
+                320
+            ],
+            "confidence": 0.598,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
                 403,
-                131,
-                420,
-                161
+                52,
+                418,
+                75
             ],
-            "confidence": 0.829734206199646,
-            "status": "VACANT"
+            "confidence": 0.584,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                297,
-                167,
-                318,
-                202
+                511,
+                159,
+                537,
+                191
             ],
-            "confidence": 0.826580286026001,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                492,
-                163,
-                513,
-                195
-            ],
-            "confidence": 0.8226190209388733,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                497,
-                72,
-                517,
-                99
-            ],
-            "confidence": 0.8225905895233154,
-            "status": "VACANT"
+            "confidence": 0.581,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
                 248,
                 239,
-                273,
+                274,
                 274
             ],
-            "confidence": 0.8213078379631042,
-            "status": "OCCUPIED"
+            "confidence": 0.578,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                385,
-                134,
-                403,
-                161
-            ],
-            "confidence": 0.8202643990516663,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                333,
-                384,
-                358,
-                423
-            ],
-            "confidence": 0.8188299536705017,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                226,
-                86,
-                247,
-                114
-            ],
-            "confidence": 0.8184299468994141,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                244,
-                164,
-                270,
+                139,
+                166,
+                176,
                 205
             ],
-            "confidence": 0.812686026096344,
-            "status": "VACANT"
+            "confidence": 0.576,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                60,
+                240,
+                93,
+                276
+            ],
+            "confidence": 0.57,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                204,
+                373,
+                242,
+                420
+            ],
+            "confidence": 0.57,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
                 507,
-                280,
+                127,
                 533,
-                318
+                158
             ],
-            "confidence": 0.8103811740875244,
-            "status": "OCCUPIED"
+            "confidence": 0.568,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                517,
-                5,
-                532,
-                26
+                480,
+                50,
+                497,
+                72
             ],
-            "confidence": 0.807542622089386,
-            "status": "VACANT"
+            "confidence": 0.565,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
         },
         {
             "box": [
-                228,
-                166,
-                248,
+                176,
+                374,
+                218,
+                421
+            ],
+            "confidence": 0.56,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                78,
+                274,
+                126,
+                321
+            ],
+            "confidence": 0.552,
+            "status": "OCCUPIED",
+            "confidence_status": "HIGH"
+        },
+        {
+            "box": [
+                145,
+                387,
+                178,
+                420
+            ],
+            "confidence": 0.522,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
+        },
+        {
+            "box": [
+                68,
+                142,
+                96,
+                170
+            ],
+            "confidence": 0.518,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
+        },
+        {
+            "box": [
+                326,
+                82,
+                341,
+                107
+            ],
+            "confidence": 0.518,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
+        },
+        {
+            "box": [
+                89,
+                165,
+                121,
                 206
             ],
-            "confidence": 0.8068529367446899,
-            "status": "VACANT"
+            "confidence": 0.511,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
         },
         {
             "box": [
-                181,
-                166,
+                312,
+                453,
+                342,
+                497
+            ],
+            "confidence": 0.509,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
+        },
+        {
+            "box": [
+                175,
+                450,
                 210,
-                206
+                488
             ],
-            "confidence": 0.8058671355247498,
-            "status": "VACANT"
+            "confidence": 0.505,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
         },
         {
             "box": [
-                481,
-                75,
-                499,
-                100
+                267,
+                138,
+                285,
+                166
             ],
-            "confidence": 0.7998414039611816,
-            "status": "VACANT"
+            "confidence": 0.504,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
+        },
+        {
+            "box": [
+                252,
+                139,
+                274,
+                166
+            ],
+            "confidence": 0.504,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
+        },
+        {
+            "box": [
+                227,
+                85,
+                247,
+                114
+            ],
+            "confidence": 0.494,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
+        },
+        {
+            "box": [
+                46,
+                369,
+                92,
+                418
+            ],
+            "confidence": 0.481,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
+        },
+        {
+            "box": [
+                233,
+                139,
+                255,
+                166
+            ],
+            "confidence": 0.461,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
+        },
+        {
+            "box": [
+                30,
+                240,
+                65,
+                277
+            ],
+            "confidence": 0.453,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
         },
         {
             "box": [
                 169,
-                86,
-                188,
-                115
-            ],
-            "confidence": 0.7958400845527649,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                321,
-                286,
-                343,
-                321
-            ],
-            "confidence": 0.7880065441131592,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                474,
-                164,
-                495,
-                194
-            ],
-            "confidence": 0.7846811413764954,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                500,
-                392,
-                527,
-                429
-            ],
-            "confidence": 0.7747851610183716,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                185,
-                241,
-                212,
-                276
-            ],
-            "confidence": 0.7663068771362305,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                418,
-                49,
-                433,
-                75
-            ],
-            "confidence": 0.7626529932022095,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                420,
-                132,
-                439,
-                160
-            ],
-            "confidence": 0.7568104863166809,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                234,
-                141,
-                256,
-                167
-            ],
-            "confidence": 0.7482340931892395,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                270,
-                166,
-                301,
+                165,
+                208,
                 204
             ],
-            "confidence": 0.7460078001022339,
-            "status": "OCCUPIED"
+            "confidence": 0.445,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
         },
         {
             "box": [
-                402,
-                10,
-                416,
-                32
+                267,
+                83,
+                295,
+                112
             ],
-            "confidence": 0.7336198091506958,
-            "status": "VACANT"
+            "confidence": 0.441,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
         },
         {
             "box": [
-                528,
-                276,
-                558,
-                318
+                247,
+                84,
+                266,
+                113
             ],
-            "confidence": 0.7247034907341003,
-            "status": "VACANT"
+            "confidence": 0.428,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
         },
         {
             "box": [
-                303,
-                282,
-                324,
-                321
-            ],
-            "confidence": 0.7190181016921997,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                210,
-                85,
-                232,
-                115
-            ],
-            "confidence": 0.7168630361557007,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                495,
-                49,
-                513,
-                72
-            ],
-            "confidence": 0.7123703360557556,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                438,
-                132,
-                456,
-                160
-            ],
-            "confidence": 0.7019901275634766,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                195,
-                141,
-                217,
-                168
-            ],
-            "confidence": 0.6926695108413696,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                203,
-                168,
-                224,
-                206
-            ],
-            "confidence": 0.6922099590301514,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                428,
-                395,
-                454,
-                428
-            ],
-            "confidence": 0.6813126802444458,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                154,
-                85,
-                174,
-                115
-            ],
-            "confidence": 0.6766753792762756,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                183,
                 86,
-                203,
-                115
+                141,
+                113,
+                169
             ],
-            "confidence": 0.6699517369270325,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                281,
-                286,
-                303,
-                321
-            ],
-            "confidence": 0.6521235108375549,
-            "status": "OCCUPIED"
+            "confidence": 0.426,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
         },
         {
             "box": [
                 289,
-                392,
-                312,
-                424
+                391,
+                314,
+                423
             ],
-            "confidence": 0.6488005518913269,
-            "status": "OCCUPIED"
+            "confidence": 0.424,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
         },
         {
             "box": [
-                264,
-                62,
-                285,
-                84
-            ],
-            "confidence": 0.643732488155365,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                360,
-                12,
-                374,
-                34
-            ],
-            "confidence": 0.6390785574913025,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                475,
-                395,
-                503,
-                426
-            ],
-            "confidence": 0.6335391998291016,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                347,
-                13,
-                360,
-                36
-            ],
-            "confidence": 0.620656430721283,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                511,
-                160,
-                535,
-                195
-            ],
-            "confidence": 0.6158508658409119,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                354,
-                55,
-                371,
-                79
-            ],
-            "confidence": 0.6154404878616333,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                358,
-                374,
-                382,
-                426
-            ],
-            "confidence": 0.6142362952232361,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                242,
-                18,
-                261,
-                43
-            ],
-            "confidence": 0.6048742532730103,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                201,
-                275,
-                225,
-                325
-            ],
-            "confidence": 0.6005567312240601,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                266,
-                395,
-                294,
-                425
-            ],
-            "confidence": 0.592036783695221,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                307,
-                15,
-                322,
-                40
-            ],
-            "confidence": 0.5839119553565979,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                261,
-                167,
-                286,
+                108,
+                166,
+                145,
                 205
             ],
-            "confidence": 0.571724534034729,
-            "status": "VACANT"
+            "confidence": 0.401,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
         },
         {
             "box": [
-                405,
-                391,
-                429,
-                426
-            ],
-            "confidence": 0.5463055372238159,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                342,
-                56,
-                357,
-                80
-            ],
-            "confidence": 0.5324241518974304,
-            "status": "OCCUPIED"
-        },
-        {
-            "box": [
-                284,
-                61,
-                300,
-                82
-            ],
-            "confidence": 0.5140203237533569,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                311,
-                378,
-                335,
+                428,
+                389,
+                454,
                 427
             ],
-            "confidence": 0.505439281463623,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                334,
-                14,
-                346,
-                37
-            ],
-            "confidence": 0.48621708154678345,
-            "status": "VACANT"
-        },
-        {
-            "box": [
-                318,
-                15,
-                333,
-                39
-            ],
-            "confidence": 0.4688616394996643,
-            "status": "VACANT"
+            "confidence": 0.4,
+            "status": "OCCUPIED",
+            "confidence_status": "LOW"
         }
     ]
 }
