@@ -12,5 +12,12 @@
         "occupied": 114,
         "vacant": 2,
         "occupancy_rate": 98.28
+    },
+    {
+        "analysis_time": "12-10-2026 09:20:02 AM",
+        "total_slots": 142,
+        "occupied": 20,
+        "vacant": 122,
+        "occupancy_rate": 14.08
     }
 ]
